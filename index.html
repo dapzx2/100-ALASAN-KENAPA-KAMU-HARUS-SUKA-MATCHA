@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100 Alasan Kenapa Kamu Harus Suka Matcha</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -10,23 +10,281 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
+            /* Mode Normal (Sage - Kalem) */
             --sage: #5a6f58;
             --sage-dark: #3d4a3c;
             --cream: #f5f0e6;
             --matcha-light: #a8c69f;
             --pink-accent: #e8b4b8;
+            --text-color: #3d4a3c;
+            --bg-color: #f5f0e6;
+            --card-bg: #ffffff;
+            --btn-bg: #e74c3c;
+            --btn-shadow: #c0392b;
         }
+
+        /* Mode Matcha (Neon) */
+        body.mode-matcha {
+            --sage: #39ff14;
+            --sage-dark: #002200;
+            --cream: #0a0a0a;
+            --matcha-light: #ccff00;
+            --pink-accent: #ff00ff;
+            --text-color: #39ff14;
+            --bg-color: #050505;
+            --card-bg: #1f1f1f;
+            --btn-bg: #ff00ff;
+            --btn-shadow: #b300b3;
+        }
+
+        /* Mode Bahaya (Warning Red) */
+        body.mode-danger {
+            --sage: #ff0000;
+            --sage-dark: #330000;
+            --cream: #000000;
+            --matcha-light: #ff4d4d;
+            --pink-accent: #8b0000;
+            --text-color: #ff0000;
+            --bg-color: #1a0000;
+            --card-bg: #330000;
+            --btn-bg: #ff0000;
+            --btn-shadow: #800000;
+            transition: none !important;
+        }
+        
+        body.mode-danger .hero { background: #330000; transition: none; }
+        body.mode-danger .main-title span { background: #ff0000; color: #000; }
+        body.mode-danger .gacha-section { background: #8b0000; transition: none; }
+        body.mode-danger .footer { background: #000000; transition: none; }
+        body.mode-danger .survey-section { background: #1a0000; transition: none; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--cream);
+            background: var(--bg-color);
+            color: var(--text-color);
             overflow-x: hidden;
+            width: 100%;
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* HERO SECTION */
+        /* --- UI COMPONENTS --- */
+
+        /* DANGER ALERT (Animation) */
+        #danger-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.95);
+            z-index: 20000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @keyframes busterCallPop {
+            0% { transform: scale(0.1); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes sirenFlash {
+            0% { background: rgba(255, 0, 0, 0.9); }
+            50% { background: rgba(100, 0, 0, 0.9); }
+            100% { background: rgba(255, 0, 0, 0.9); }
+        }
+        
+        #danger-alert.active {
+            display: flex;
+            animation: sirenFlash 0.5s infinite;
+        }
+
+        #danger-alert.active h1 {
+            animation: busterCallPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        #danger-alert h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: clamp(3rem, 12vw, 5rem); 
+            margin-bottom: 1rem;
+            line-height: 1;
+            text-shadow: 4px 4px 0 #000;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+        
+        #danger-alert p {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            max-width: 600px;
+            font-weight: bold;
+        }
+
+        /* LOADING SCREEN */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--sage-dark);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: var(--cream);
+            transition: opacity 0.5s;
+        }
+        
+        #loading-text {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            margin-top: 1rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--matcha-light);
+            border-top: 5px solid var(--cream);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* MODAL */
+        #tc-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            padding: 1rem;
+        }
+
+        .tc-content {
+            background: var(--cream);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 100%;
+            width: 400px;
+            text-align: center;
+            border: 4px solid var(--sage);
+            box-shadow: 10px 10px 0 var(--sage-dark);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .tc-title {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            color: #d63031;
+            margin-bottom: 1rem;
+            transform: rotate(-2deg);
+        }
+
+        /* --- FIXED BUTTON STYLE HERE --- */
+        .tc-btn {
+            background: var(--sage);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: transform 0.2s;
+            box-shadow: 4px 4px 0 var(--sage-dark);
+            width: 100%;
+            max-width: 250px;
+        }
+        
+        .tc-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* TOGGLE */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9990;
+            background: var(--cream);
+            border: 2px solid var(--sage);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-color);
+        }
+
+        .toggle-switch {
+            width: 40px;
+            height: 20px;
+            background: var(--sage);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .toggle-circle {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        body.mode-matcha .toggle-circle { transform: translateX(20px); }
+
+        /* BUTTONS COMMON & RIPPLE */
+        .btn-interactive {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .btn-interactive:active { transform: scale(0.95) !important; }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+        /* HERO */
         .hero {
             min-height: 100vh;
             background: var(--sage-dark);
@@ -36,6 +294,8 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            padding-top: 60px;
+            padding-bottom: 40px;
         }
 
         .hero::before {
@@ -59,11 +319,11 @@
         .doodle {
             position: absolute;
             opacity: 0.15;
-            font-size: 4rem;
+            font-size: clamp(2rem, 8vw, 4rem);
         }
 
-        .doodle-1 { top: 10%; left: 5%; animation: float 6s ease-in-out infinite; }
-        .doodle-2 { top: 20%; right: 10%; animation: float 8s ease-in-out infinite reverse; }
+        .doodle-1 { top: 15%; left: 5%; animation: float 6s ease-in-out infinite; }
+        .doodle-2 { top: 25%; right: 10%; animation: float 8s ease-in-out infinite reverse; }
         .doodle-3 { bottom: 15%; left: 15%; animation: float 7s ease-in-out infinite; }
         .doodle-4 { bottom: 25%; right: 5%; animation: float 5s ease-in-out infinite reverse; }
 
@@ -75,34 +335,40 @@
         .hero-content {
             text-align: center;
             z-index: 10;
-            padding: 2rem;
+            padding: 0 1.5rem;
+            width: 100%;
+            max-width: 800px;
         }
 
         .main-title {
             font-family: 'Caveat', cursive;
-            font-size: clamp(3rem, 10vw, 7rem);
+            font-size: clamp(2.5rem, 11vw, 5.5rem); 
             color: var(--cream);
             line-height: 1.1;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-shadow: 4px 4px 0 rgba(0,0,0,0.1);
             transform: rotate(-2deg);
+            word-wrap: break-word;
         }
 
         .main-title span {
             display: inline-block;
             background: var(--pink-accent);
             color: var(--sage-dark);
-            padding: 0.2rem 1rem;
+            padding: 0.1em 0.4em;
             transform: rotate(2deg);
-            margin: 0.5rem 0;
+            margin: 0.2em 0;
+            border-radius: 5px; 
         }
 
         .subtitle {
             font-family: 'Caveat', cursive;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: clamp(1rem, 4vw, 1.5rem);
             color: var(--matcha-light);
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
             animation: wiggle 3s ease-in-out infinite;
+            padding: 0 1rem;
+            line-height: 1.4;
         }
 
         @keyframes wiggle {
@@ -112,16 +378,21 @@
 
         .cta-btn {
             font-family: 'Caveat', cursive;
-            font-size: 1.8rem;
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
             background: var(--cream);
             color: var(--sage-dark);
             border: none;
-            padding: 1rem 2.5rem;
+            padding: 1rem 2rem;
             cursor: pointer;
             border-radius: 50px;
             box-shadow: 6px 6px 0 var(--sage);
             transition: all 0.2s;
             transform: rotate(1deg);
+            white-space: normal;
+            line-height: 1.2;
+            max-width: 100%;
+            width: auto;
+            display: inline-block;
         }
 
         .cta-btn:hover {
@@ -129,16 +400,12 @@
             box-shadow: 8px 8px 0 var(--sage);
         }
 
-        .cta-btn:active {
-            transform: translateY(4px);
-            box-shadow: 2px 2px 0 var(--sage);
-        }
-
-        /* REASONS SECTION */
+        /* REASONS */
         .reasons-section {
-            background: var(--cream);
+            background: var(--bg-color);
             padding: 4rem 1rem;
             position: relative;
+            transition: background 0.3s;
         }
 
         .reasons-section::before {
@@ -147,7 +414,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 80px;
+            height: 50px; 
             background: var(--sage-dark);
             clip-path: polygon(0 0, 100% 0, 100% 20%, 50% 100%, 0 20%);
         }
@@ -155,7 +422,7 @@
         .reasons-container {
             max-width: 800px;
             margin: 0 auto;
-            padding-top: 3rem;
+            padding-top: 2rem;
         }
 
         .reason-item {
@@ -163,36 +430,52 @@
             align-items: flex-start;
             margin-bottom: 1.5rem;
             opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.5s ease;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
 
         .reason-item.visible {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         .reason-number {
             font-family: 'Caveat', cursive;
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 700;
             color: var(--sage);
-            min-width: 70px;
+            min-width: 45px;
             text-align: center;
             line-height: 1;
+            margin-right: 8px;
         }
 
         .reason-text {
-            background: white;
-            padding: 1rem 1.5rem;
+            background: var(--card-bg);
+            padding: 1rem 1.2rem;
             border-radius: 0 20px 20px 20px;
             box-shadow: 4px 4px 0 var(--matcha-light);
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--sage-dark);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-color);
             position: relative;
             flex: 1;
         }
+
+        body.mode-matcha .reason-text {
+            color: var(--matcha-light);
+            border: 1px solid var(--sage);
+            box-shadow: 4px 4px 0 var(--sage);
+        }
+        
+        body.mode-danger .reason-text {
+            background: #330000;
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            box-shadow: 4px 4px 0 #8b0000;
+        }
+        
+        body.mode-danger .reason-number { color: #ff0000; }
 
         .reason-item:nth-child(even) .reason-text {
             background: var(--matcha-light);
@@ -200,138 +483,253 @@
             box-shadow: 4px 4px 0 var(--sage);
         }
 
+        body.mode-matcha .reason-item:nth-child(even) .reason-text {
+            background: #2a2a2a;
+            color: var(--sage);
+            border: 1px solid var(--sage);
+        }
+        
+        body.mode-danger .reason-item:nth-child(even) .reason-text {
+            background: #4d0000;
+            color: #ffcccc;
+            border: 1px solid #ff0000;
+            box-shadow: 4px 4px 0 #8b0000;
+        }
+
         .reason-item:nth-child(5n) .reason-text {
             background: var(--pink-accent);
+            color: var(--sage-dark);
             box-shadow: 4px 4px 0 #d49a9e;
             transform: rotate(-1deg);
         }
 
-        .reason-item:nth-child(7n) .reason-text {
-            transform: rotate(1deg);
+        body.mode-matcha .reason-item:nth-child(5n) .reason-text {
+             background: #2a2a2a;
+             color: var(--pink-accent);
+             border: 1px solid var(--pink-accent);
+             box-shadow: 4px 4px 0 var(--pink-accent);
         }
 
-        /* GACHA SECTION */
+        .reason-item:nth-child(7n) .reason-text { transform: rotate(1deg); }
+
+        /* GACHA */
         .gacha-section {
             background: var(--sage);
-            padding: 5rem 1rem;
+            padding: 4rem 1rem;
             text-align: center;
             position: relative;
             overflow: hidden;
+            transition: background 0.3s;
         }
 
-        .gacha-section::before,
-        .gacha-section::after {
+        .gacha-section::before, .gacha-section::after {
             content: '🍵';
             position: absolute;
-            font-size: 8rem;
+            font-size: clamp(4rem, 10vw, 8rem);
             opacity: 0.1;
         }
 
-        .gacha-section::before { top: 10%; left: -2rem; }
-        .gacha-section::after { bottom: 10%; right: -2rem; }
+        .gacha-section::before { top: 5%; left: -1rem; }
+        .gacha-section::after { bottom: 5%; right: -1rem; }
 
         .gacha-title {
             font-family: 'Caveat', cursive;
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(2rem, 8vw, 3.5rem);
             color: var(--cream);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
         }
 
         .gacha-subtitle {
             color: var(--matcha-light);
-            font-size: 1rem;
-            margin-bottom: 3rem;
-            max-width: 500px;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            margin-bottom: 2.5rem;
+            max-width: 90%;
             margin-left: auto;
             margin-right: auto;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.1); 
+            line-height: 1.4;
+        }
+
+        body.mode-matcha .gacha-subtitle { color: var(--cream); }
+        
+        body.mode-danger .gacha-subtitle {
+            color: #000;
+            background: #ff0000;
+            padding: 2px 10px;
         }
 
         .gacha-machine {
             background: var(--cream);
             max-width: 350px;
+            width: 100%;
             margin: 0 auto;
             border-radius: 30px;
-            padding: 2rem;
-            box-shadow: 10px 10px 0 var(--sage-dark);
+            padding: 1.5rem;
+            box-shadow: 8px 8px 0 var(--sage-dark);
             position: relative;
         }
 
         .gacha-machine::before {
             content: '🎰';
             position: absolute;
-            top: -30px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 3rem;
+            font-size: 2.5rem;
         }
 
         .gacha-display {
             background: var(--sage-dark);
             border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            min-height: 120px;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            min-height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            border: 4px solid rgba(0,0,0,0.1);
         }
 
         .gacha-result {
             font-family: 'Caveat', cursive;
-            font-size: 2rem;
+            font-size: clamp(1.4rem, 6vw, 2rem); 
             color: var(--cream);
             text-align: center;
+            white-space: pre-wrap;
+            line-height: 1.2;
+            width: 100%;
         }
 
         .gacha-result.spinning {
-            animation: slotSpin 0.1s linear infinite;
+            animation: slotSpin 0.05s linear infinite; 
+            filter: blur(1px);
+        }
+
+        .gacha-result.glitch {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #ff0000;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px white;
         }
 
         @keyframes slotSpin {
-            0% { transform: translateY(-20px); opacity: 0; }
+            0% { transform: translateY(-50px); opacity: 0.5; }
             50% { opacity: 1; }
-            100% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(50px); opacity: 0.5; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
         }
 
         .spin-btn {
             font-family: 'Caveat', cursive;
-            font-size: 1.8rem;
-            background: #e74c3c;
+            font-size: clamp(1.1rem, 5vw, 1.5rem); 
+            background: var(--btn-bg);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.2rem;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 4px 4px 0 #c0392b;
+            box-shadow: 4px 4px 0 var(--btn-shadow);
             transition: all 0.2s;
             width: 100%;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .spin-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .spin-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #c0392b;
+            transform: scale(1.02);
+            filter: brightness(1.1);
         }
 
         .spin-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
+            background: #95a5a6;
+            box-shadow: none;
         }
 
         .gacha-comment {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             font-family: 'Caveat', cursive;
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
             color: var(--cream);
             opacity: 0;
             transition: opacity 0.5s;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            padding: 0 0.5rem;
         }
 
-        .gacha-comment.show {
-            opacity: 1;
+        .gacha-comment.show { opacity: 1; }
+        
+        /* SURVEY */
+        .survey-section {
+            background: var(--bg-color);
+            padding: 3rem 1rem;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        
+        .survey-title {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: var(--sage-dark);
+            margin-bottom: 2rem;
+        }
+        
+        body.mode-danger .survey-title { color: #ff0000; }
+        
+        .survey-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 100px;
+        }
+        
+        .btn-survey {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-yes {
+            background: var(--sage);
+            color: white;
+            box-shadow: 4px 4px 0 var(--sage-dark);
+            z-index: 2;
+        }
+        
+        .btn-yes:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0;
+        }
+        
+        .btn-no {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 4px 4px 0 #c0392b;
+            position: relative; 
+        }
+        
+        .btn-no:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0;
         }
 
         /* FOOTER */
@@ -339,6 +737,7 @@
             background: var(--sage-dark);
             padding: 4rem 1rem;
             text-align: center;
+            transition: background 0.3s;
         }
 
         .disclaimer {
@@ -347,13 +746,14 @@
             border-radius: 15px;
             max-width: 600px;
             margin: 0 auto 3rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--matcha-light);
             font-style: italic;
+            line-height: 1.5;
         }
 
         .divider {
-            width: 100px;
+            width: 80px;
             height: 3px;
             background: var(--matcha-light);
             margin: 2rem auto;
@@ -362,83 +762,85 @@
 
         .closing-quote {
             font-family: 'Caveat', cursive;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-size: clamp(1.4rem, 5vw, 2.2rem);
             color: var(--cream);
             max-width: 600px;
             margin: 0 auto 3rem;
             line-height: 1.4;
         }
 
-        .closing-quote span {
-            color: var(--pink-accent);
-        }
+        .closing-quote span { color: var(--pink-accent); }
 
         .final-btn {
             font-family: 'Caveat', cursive;
-            font-size: 2rem;
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
             background: var(--pink-accent);
             color: var(--sage-dark);
             border: none;
-            padding: 1rem 3rem;
+            padding: 0.8rem 2.5rem;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
             transition: all 0.2s;
             text-decoration: none;
             display: inline-block;
-        }
-
-        .final-btn:hover {
-            transform: rotate(-3deg) scale(1.05);
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
-        }
-
-        .heart-rain {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            font-size: 2rem;
-            animation: fall 3s linear forwards;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            max-width: 90%;
         }
 
         /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--cream);
-        }
-
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
         ::-webkit-scrollbar-thumb {
             background: var(--sage);
             border-radius: 10px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--sage-dark);
-        }
-
-        /* Mobile fixes */
         @media (max-width: 600px) {
-            .reason-number {
-                min-width: 50px;
-                font-size: 2rem;
+            .mode-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 0.3rem 0.8rem;
+                font-size: 0.7rem;
             }
-            
-            .reason-text {
-                padding: 0.8rem 1rem;
-                font-size: 0.9rem;
-            }
+            .tc-title { margin-bottom: 0.5rem; }
+            .tc-content { padding: 1.5rem; }
+            .gacha-machine { padding: 1.2rem; }
+            .gacha-section { padding: 3rem 1rem; }
         }
     </style>
 </head>
 <body>
+    <!-- DANGER ALERT -->
+    <div id="danger-alert" onclick="restoreNormalMode()" ontouchstart="restoreNormalMode()">
+        <h1>🚨 BUSTER CALL 🚨</h1>
+        <p>BERANI NOLAK MATCHA?!</p>
+        <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8;">(Klik layar untuk minta ampun & kembali normal)</p>
+    </div>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <div id="loading-text">Memuat manipulasi pikiran...</div>
+    </div>
+
+    <!-- T&C MODAL -->
+    <div id="tc-modal">
+        <div class="tc-content">
+            <h2 class="tc-title">⚠️ PERINGATAN KERAS ⚠️</h2>
+            <p>Dengan mengakses situs ini, Anda setuju untuk minimal mencicipi satu teguk matcha dalam 24 jam ke depan.</p>
+            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">(Tidak ada tombol close, jangan harap bisa kabur)</p>
+            <button class="tc-btn btn-interactive" onclick="closeModal()">Saya Pasrah & Setuju 🍵</button>
+        </div>
+    </div>
+
+    <!-- FAKE DARK MODE TOGGLE -->
+    <div class="mode-toggle" onclick="toggleMatchaMode()">
+        <span id="mode-label">Mode Normal</span>
+        <div class="toggle-switch">
+            <div class="toggle-circle"></div>
+        </div>
+    </div>
+
     <!-- HERO SECTION -->
     <section class="hero">
         <div class="doodle doodle-1">🍃</div>
@@ -453,7 +855,7 @@
                 HARUS SUKA MATCHA
             </h1>
             <p class="subtitle">(Scroll ke bawah atau aku ngambek 3 hari)</p>
-            <button class="cta-btn" onclick="scrollToReasons()">
+            <button class="cta-btn btn-interactive" onclick="scrollToReasons()">
                 👇 PASRAH AJA & SCROLL KE BAWAH 👇
             </button>
         </div>
@@ -468,14 +870,14 @@
 
     <!-- GACHA SECTION -->
     <section class="gacha-section" id="gacha">
-        <h2 class="gacha-title">GACHA MINUMAN HARI INI 🎰</h2>
-        <p class="gacha-subtitle">"Bingung mau pesen apa? Biar mesin (dan sistem curang aku) yang pilihin buat kamu."</p>
+        <h2 class="gacha-title">GACHA MINUMAN HARI INI</h2> 
+        <p class="gacha-subtitle">"Biar mesin ini yang pilihin buat kamu."</p>
         
         <div class="gacha-machine">
             <div class="gacha-display">
                 <div class="gacha-result" id="gachaResult">❓</div>
             </div>
-            <button class="spin-btn" id="spinBtn" onclick="spinGacha()">
+            <button class="spin-btn btn-interactive" id="spinBtn" onclick="spinGacha()">
                 🔴 PUTAR TAKDIR 🔴
             </button>
         </div>
@@ -483,6 +885,17 @@
         <p class="gacha-comment" id="gachaComment">
             "Tuh kan, mesinnya aja tau kamu jodohnya sama Matcha. Udah nurut aja."
         </p>
+    </section>
+    
+    <!-- SURVEY SECTION -->
+    <section class="survey-section">
+        <h2 class="survey-title">Survey Kepuasan (Wajib Isi)</h2>
+        <p style="margin-bottom: 2rem; color: var(--sage-dark);">Jujur, setelah baca ini jadi pengen Matcha kan?</p>
+        
+        <div class="survey-buttons" id="surveyArea">
+            <button class="btn-survey btn-yes btn-interactive" onclick="celebrateMatcha(this)">MAU BANGET 😍</button>
+            <button class="btn-survey btn-no btn-interactive" id="dangerTriggerBtn" ontouchstart="triggerDangerMode()" onclick="triggerDangerMode()">Enggak 😒</button>
+        </div>
     </section>
 
     <!-- FOOTER -->
@@ -499,191 +912,257 @@
             cuma lagi <span>cosplay</span> jadi warna Ijo aja."
         </p>
         
-        <a href="https://wa.me/" class="final-btn" target="_blank">
+        <a href="https://wa.me/" class="final-btn btn-interactive" target="_blank">
             IYA DEHH 🙄
         </a>
     </footer>
 
     <script>
-        // All 100 reasons
-        const reasons = [
-            "Anggap aja lagi simulasi jadi sapi estetik di Swiss.",
-            "Rasanya unik, seunik kamu (eaaa).",
-            "Pahitnya dikit kok, lebih banyak manisnya kayak senyum kamu.",
-            "Lidah kamu cuma kaget, belum kenalan aja sama rasanya.",
-            "Biar feed Instagram kita warnanya ijo estetik.",
-            "Liat bubuknya deh, halus banget kayak bedak mahal.",
-            "Ini bukan jus kangkung, sumpah.",
-            "Orang Jepang panjang umur gara-gara ini (katanya).",
-            "Kalau kamu merem, rasanya mirip cokelat (harus pake imajinasi tinggi).",
-            "Gak bikin deg-degan, malah bikin tenang.",
-            "Teksturnya creamy, lembut banget di tenggorokan.",
-            "Sekali aja. Seteguk. Plis.",
-            "Ini tren global, yuk kita cobain bareng.",
-            "Karena aku udah capek-capek bikin web ini dengan penuh cinta.",
-            "Kamu gak suka matcha = Gak apa-apa, aku tetap suka kamu.",
-            "Kata ramalan bintang, kita cocok. Matcha cuma pelengkap aja.",
-            "Coba kita kalibrasi ulang lidahnya pelan-pelan.",
-            "Hulk warna hijau dia kuat, kamu mau kuat nemenin aku kan?",
-            "Uang warna hijau (Dollar), kamu suka uang kan? Nah.",
-            "Lampu hijau artinya jalan. Matcha artinya jalanin aja dulu.",
-            "Enakan minum berdua tau daripada aku sendirian.",
-            "Semut aja suka yang manis-manis, ini manis lho (udah aku mintain gula).",
-            "Coba minumnya sambil kayang, pasti sensasinya beda.",
-            "Kalau kamu nolak, aku pesen air putih aja deh nemenin kamu.",
-            "Jangan benci dulu sebelum kenal deket.",
-            "Matcha gak pernah nyakitin kamu.",
-            "Kamu phobia warna hijau apa gimana?",
-            "Shrek juga hijau dan dia happy ending.",
-            "Tanda-tanda orang bahagia itu suka nyoba hal baru.",
-            "Mungkin selera kamu emang yang manis-manis banget (kayak aku).",
-            "Hati aku loading kalau kamu gak senyum.",
-            "Es teh emang enak, tapi Matcha punya tempat sendiri di hatiku.",
-            "Anggap aja ini tanda kecocokan kita.",
-            "Coba liat mataku yang penuh harap ini.",
-            "Yakin nggak mau nyicip dikit?",
-            "Sayang lho, udah dibuatin cantik-cantik sama baristanya.",
-            "Barista-nya udah senyum ramah, kita hargai karyanya ya?",
-            "Kucing lewat aja ngeong, artinya dia dukung kita.",
-            "Petualangan rasa baru biar hidup makin berwarna.",
-            "Kita suit. Kalau aku menang, kamu minum.",
-            "Kalau kamu menang, kamu tetep minum (aturan sayang).",
-            "Baju kamu hari ini ada hijaunya dikit, jadi harus matching.",
-            "Sekali seumur hidup kok (besok terserah kamu deh).",
-            "Buat menuhin kuota \"Mencoba Hal Baru\" tahun ini.",
-            "Nanti fotonya aku edit biar muka kamu makin glowing.",
-            "Tuh banyak yang suka, siapa tau kamu juga jodoh sama rasanya.",
-            "Jiwa petualang kayak kamu pasti berani coba.",
-            "Bikin aura kamu kelihatan lebih fresh.",
-            "Satu sruputan aja. Janji.",
-            "Liat mata aku. Tega nolak?",
-            "Rasanya gak seburuk nilai matematikaku dulu kok.",
-            "Ini bukan paksaan, ini ajakan penuh kasih sayang.",
-            "Siapa tau habis minum dapet ilham buat masa depan.",
-            "Gelasnya udah nungguin kamu tuh dari tadi.",
-            "Aku adukkin deh biar makin enak dan tercampur rata.",
-            "Ayo dong, Yang...",
-            "Yaudahlah ya, namanya juga usaha.",
-            "Iseng aja pengen liat ekspresi lucu kamu pas nyicip.",
-            "Siapa tau lidah kamu tiba-tiba jatuh cinta sama rasanya.",
-            "Kata Google ini sehat, tapi kata aku ini enak.",
-            "Naruto kalau minum teh pasti matcha (mungkin).",
-            "Plis dong...",
-            "Dikit aja...",
-            "Baunya doang?",
-            "Pegang gelasnya doang?",
-            "Foto sama gelasnya?",
-            "Masih gak mau juga?",
-            "Pendirian kamu kuat banget ya, aku makin suka.",
-            "Aku harus loncat loncat dulu biar kamu mau?",
-            "Atau salto?",
-            "Baca puisi?",
-            "Ayolah...",
-            "Jangan biarkan aku menikmati kelezatan ini sendirian.",
-            "Matcha itu temennya Susu. Kamu suka Susu kan? ehh aku deng yang suka susu 😋",
-            "Dah lah bingung mau nulis apa lagi saking sayangnya.",
-            "Karena aku sayang kamu (ini alasan paling valid).",
-            "Matcha emang pait dikit, tapi kamu penawarnya.",
-            "Aku cuma pengen liat kamu ketawa baca ini.",
-            "Kamu jauh lebih penting daripada bubuk hijau ini.",
-            "Tapi kalau mau nyoba, aku seneng banget banget.",
-            "Kalau enggak, aku tetep sayang kok.",
-            "Makasih udah baca sampe poin 82.",
-            "Rajin banget bacanya, pasti sayang aku juga.",
-            "Pasti lagi senyum-senyum sendiri kan?",
-            "Tuh kan ketawa.",
-            "Cantik tau kalau lagi ketawa.",
-            "Jadi gimana?",
-            "Gak maksa kok (tapi berharap).",
-            "Cintaku cuma buat kamu, Matcha cuma pelengkap suasana.",
-            "Apapun minumannya, yang penting duduknya sama kamu.",
-            "Kalau tetep gak mau, yaudah aku abisin dua-duanya (aku kuat).",
-            "Aku minum matcha, kamu minum senyuman aku aja.",
-            "Kita cocok, kayak susu dan matcha yang perfect blend.",
-            "Love you cantikk.",
-            "Udah mau abis nih list-nya.",
-            "Masih gak mau berubah pikiran?",
-            "Yakin?",
-            "Beneran yakin?",
-            "Yaudah deh aku ngalah demi kamu.",
-            "Coba cek takdir minuman kamu di bawah dehh sayangg 💚"
-        ];
+        // RIPPLE EFFECT
+        document.querySelectorAll('.btn-interactive').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                
+                let clientX = e.clientX || e.touches[0].clientX;
+                let clientY = e.clientY || e.touches[0].clientY;
+                
+                let x = clientX - this.getBoundingClientRect().left;
+                let y = clientY - this.getBoundingClientRect().top;
+                
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                setTimeout(() => { ripple.remove(); }, 600);
+            });
+        });
 
-        // Gacha results (all matcha lol)
-        const gachaResults = [
-            "🍵 Matcha Latte (Enaknya 😋)",
-            "🧊 Matcha Frappe (Biar adem)",
-            "🍦 Es Krim Matcha (Manis kayak kamu)",
-            "🍵 Matcha Lagi (Udah takdir)",
-            "💚 Tetep Matcha (Jangan dilawan)"
+        // LOADING SCREEN
+        const loadingTexts = [
+            "Memuat manipulasi pikiran...",
+            "Menambahkan micin cinta...",
+            "Menghapus opsi 'Aku mau Kopi'...",
+            "Menyogok lidah...",
+            "Mewarnai hari dengan hijau..."
         ];
+        let loadIdx = 0;
+        const loadTextEl = document.getElementById('loading-text');
+        const loadInterval = setInterval(() => {
+            loadIdx = (loadIdx + 1) % loadingTexts.length;
+            loadTextEl.textContent = loadingTexts[loadIdx];
+        }, 600); 
 
-        // Populate reasons
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                clearInterval(loadInterval);
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('tc-modal').style.display = 'flex';
+                }, 500);
+            }, 3000); 
+        });
+
+        // UX FUNCTIONS
+        function closeModal() { document.getElementById('tc-modal').style.display = 'none'; }
+
+        function toggleMatchaMode() {
+            const body = document.body;
+            const label = document.getElementById('mode-label');
+            const isMatcha = body.classList.toggle('mode-matcha');
+            if (isMatcha) {
+                label.textContent = "Mode Matcha";
+                if(!window.hasAlertedMatcha) {
+                    alert("Maaf, fitur selain warna hijau sedang rusak karena terlalu cinta matcha.");
+                    window.hasAlertedMatcha = true;
+                }
+            } else {
+                label.textContent = "Mode Normal";
+            }
+        }
+
+        function scrollToReasons() {
+            document.getElementById('reasons').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            createHearts();
+        }
+
+        function celebrateMatcha(btn) {
+            btn.textContent = "AKU JUGA SAYANG KAMU 🥰";
+            btn.style.backgroundColor = "#e8b4b8";
+            btn.disabled = true;
+            createGreenConfetti();
+            createHearts();
+            setTimeout(createGreenConfetti, 500);
+            setTimeout(createHearts, 800);
+            setTimeout(() => { alert("Yeay! Akhirnya sadar juga. 💚 Selamat datang di sekte Matcha!"); }, 1000);
+        }
+
+        // ANIMATION OBSERVER
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
         function populateReasons() {
             const container = document.getElementById('reasonsList');
             reasons.forEach((reason, index) => {
                 const item = document.createElement('div');
                 item.className = 'reason-item';
-                item.innerHTML = `
-                    <div class="reason-number">${index + 1}.</div>
-                    <div class="reason-text">${reason}</div>
-                `;
+                item.innerHTML = `<div class="reason-number">${index + 1}.</div><div class="reason-text">${reason}</div>`;
                 container.appendChild(item);
+                observer.observe(item);
             });
         }
 
-        // Scroll animation for reasons
-        function handleScroll() {
-            const items = document.querySelectorAll('.reason-item');
-            items.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    item.classList.add('visible');
-                }
-            });
-        }
+        // DATA
+        const reasons = [
+            "Anggap aja lagi simulasi jadi sapi estetik di Swiss 🐄✨",
+            "Rasanya unik, seunik kamu (eaaa) 🥰",
+            "Pahitnya dikit kok, lebih banyak manisnya kayak senyum kamu ☺️",
+            "Lidah kamu cuma kaget, belum kenalan aja sama rasanya 😋",
+            "Biar feed Instagram kita warnanya ijo estetik 📸🍃",
+            "Liat bubuknya deh, halus banget kayak bedak mahal ✨",
+            "Ini bukan jus kangkung, sumpah ✌️😂",
+            "Orang Jepang panjang umur gara-gara ini (katanya)🙏",
+            "Kalau kamu merem, rasanya mirip cokelat (harus pake imajinasi tinggi) 🍫🙄",
+            "Gak bikin deg-degan, malah bikin tenang 🧘‍♂️✨",
+            "Teksturnya creamy, lembut banget di tenggorokan 😋🥛",
+            "Sekali aja. Seteguk. Plis 🙏🥺",
+            "Ini tren global, yuk kita cobain bareng 🌏👫",
+            "Karena aku udah capek-capek bikin web ini dengan penuh cinta 💻❤️",
+            "Kamu gak suka matcha = Gak apa-apa, aku tetap suka kamu 🥰",
+            "Kata ramalan bintang, kita cocok. Matcha cuma pelengkap aja ✨🔮",
+            "Franky bilang lidah kamu butuh modifikasi SUPER biar bisa ngerasain enaknya Matcha! ⭐🤖",
+            "Dokter bilang sering-sering liat warna hijau itu bagus buat mata. Anggap aja ini terapi mata gratis sambil minum. 🤓🌿",
+            "Rambut Zoro warna hijau dan dia keren banget. Matcha juga hijau, jadi secara logika... Matcha itu keren. ⚔️💚",
+            "Lampu hijau artinya jalan. Matcha artinya jalanin aja dulu 🚦💚",
+            "Enakan minum berdua tau daripada aku sendirian 🥺👫",
+            "Semut aja suka yang manis-manis, ini manis lho (udah aku mintain gula) 🐜🍬",
+            "Coba minumnya sambil kayang, pasti sensasinya beda 🤸‍♂️🤪",
+            "Setiap kali ada yang nolak matcha, satu peri teh di dunia kehilangan sayapnya. Tega kamu? 🧚‍♀️💔",
+            "Jangan benci dulu sebelum kenal deket 🛑✋",
+            "Antioksidannya tinggi, bisa menangkal radikal bebas dan omongan tetangga 🛡️🗣️",
+            "Kamu phobia warna hijau apa gimana? 😱🟢",
+            "Kandungan klorofilnya bagus buat fotosintesis (kalau kamu tanaman) 🌱☀️",
+            "Tanda-tanda orang bahagia itu suka nyoba hal baru 😁✨",
+            "Mungkin selera kamu emang yang manis-manis banget (kayak aku) 🍬🥰",
+            "Rasanya earthy, definisi 'membumi' yang sesungguhnya 🌍🧘‍♀️",
+            "Kata pakar, rasa matcha itu acquired taste (artinya: paksa dulu baru suka) 😈📚",
+            "Anggap aja ini tanda kecocokan kita 🧩❤️",
+            "Coba liat mataku yang penuh harap ini 🥺🙏",
+            "Kalau gak suka, anggap aja lagi challenge Fear Factor versi lite 😈🤢",
+            "Ini teh jepang asli, bukan jus rumput tetangga kok 🍵",
+            "Diaduknya pakai perasaan tau, hargai kerja keras sendoknya dong! 🥄😤",
+            "Kucing lewat aja ngeong, artinya dia dukung kita 🐱💖",
+            "Petualangan rasa baru biar hidup makin berwarna 🌈✨",
+            "Kita suit. Kalau aku menang, kamu minum ✌️✊🖐️",
+            "Kalau kamu menang, kamu tetep minum (aturan tetaplah aturann) 😈📜",
+            "Biar organ dalam kaget dikasih yang sehat, biasanya kan isinya gorengan mulu 🍤😱",
+            "Sekali seumur hidup kok (besok terserah kamu deh) 🗓️🙏",
+            "Buat menuhin kuota \"Mencoba Hal Baru\" tahun ini ✅📝",
+            "Zat L-Theanine di dalamnya bikin rileks, cocok buat ngadepin drama hidup 😌🎭",
+            "Minum ini bikin level kultivasi naik ke tingkat Immortal (kata manhwa) 🧘‍♂️⚡",
+            "Jiwa petualang kayak kamu pasti berani coba 🗺️🤠",
+            "Kalau diminum sambil merem, rasanya... tetep rasa matcha sih 🙄🍵",
+            "Ini sebenernya daun teh yang ditumbuk penuh dedikasi (dan emosi) 🌿💪",
+            "Coba dulu, kalau gak enak... yaudah telen aja buruan 😈🥃",
+            "Rasanya kayak rumput laut tapi versi dessert mahal 🌊🍰",
+            "Biar pencernaan lancar jaya kayak jalan tol jam 3 pagi 🛣️💩",
+            "Siapa tau habis minum dapet ilham bisa lihat masa depan 💡🔮",
+            "Kalau minum ini, auto berasa jadi warga lokal Kyoto ⛩️🎎",
+            "Ini ijonya natural, gak kayak janji manis pemerintah 🙏",
+            "Ayo dong, bub...",
+            "Yaudahlah ya, namanya juga usaha 🤷‍♂️😅",
+            "Iseng aja sih pengen liat ekspresi kamu pas lagi coba 😋",
+            "Rasanya unik, bikin bingung tapi penasaran kan? 🤔❓",
+            "Kata Google ini sehat, tapi kata aku ini enak 😋📱",
+            "Luffy kalau ga makan daging pasti minum ini (biar kuat jadi Raja Bajak Laut) 🍖🏴‍☠️",
+            "Plis dong... 🙏🥺",
+            "Dikit aja... 🤏🥺",
+            "Baunya doang? 👃🍵",
+            "Pegang gelasnya doang? 🤲🥤",
+            "Foto sama gelasnya? 📸✌️",
+            "Masih gak mau juga? 🙄😤",
+            "Aku aja bisa nyasar ke hati kamu, masa matcha enggak? ⚔️💚",
+            "Aku harus loncat loncat dulu biar kamu mau? 🦘🥺",
+            "Atau salto? 🤸‍♂️💨",
+            "Dibuat dengan teknik rahasia biar rasanya nyampe ke hati (eaakk) 😍💘",
+            "Ayolah... 🙏😫",
+            "Jangan biarkan aku menikmati kelezatan ini sendirian 🥺🍵",
+            "Matcha itu temennya Susu. Kamu suka Susu kan? ehh aku deng yang suka susu 😋🥛",
+            "Chopper bilang ini obat paling ampuh buat hati yang galau 🦌⚕️",
+            "Karena aku sayang kamu (ini alasan paling valid) 🥰❤️",
+            "Matcha emang pait dikit, tapi kamu penawarnya 💊🥰",
+            "Aku cuma pengen liat kamu ketawa baca ini 😁📖",
+            "Kamu jauh lebih penting daripada bubuk hijau ini 🥺💚",
+            "Nami pasti minta bayaran mahal buat resep ini, tapi buat kamu gratis 💰🍊",
+            "Kalau enggak, aku tetep sayang kok 🥰🤗",
+            "Makasih udah baca sampe poin 82 🙏📚",
+            "Rajin banget bacanya, pasti sayang aku juga 🥰👀",
+            "Pasti lagi senyum-senyum sendiri kan? ☺️😏",
+            "Tuh kan ketawa 😁😆",
+            "Cantik tau kalau lagi ketawa 🥰✨",
+            "Rasanya selegendaris One Piece (harta karun) 🏴‍☠️💰",
+            "Gak maksa kok (tapi berharap) 😈🤞",
+            "Cintaku cuma buat kamu, Matcha cuma pelengkap suasana ❤️🍵",
+            "Apapun minumannya, yang penting duduknya sama kamu 🪑👫",
+            "Kalau tetep gak mau, yaudah aku abisin dua-duanya (aku kuat) 💪😋",
+            "Aku minum matcha, kamu minum senyuman aku aja 😁🥤",
+            "Kita cocok, kayak susu dan matcha yang perfect blend 🥛🍵",
+            "Love you cantikk 🥰❤️",
+            "Udah mau abis nih list-nya 🔚📜",
+            "Masih gak mau berubah pikiran? 🙄🤔",
+            "Yakin? 🤨❓",
+            "Beneran yakin? 😈🔥",
+            "Yaudah deh aku ngalah demi kamu 🏳️😔",
+            "Coba cek takdir minuman kamu di bawah dehh sayangg 💚👇"
+        ];
 
-        // Scroll to reasons
-        function scrollToReasons() {
-            document.getElementById('reasons').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
-            createHearts();
-        }
+        const spinItems = ["☕ Kopi Hitam", "🧋 Boba Milk Tea", "🥤 Air Putih", "🍺 Teh Obeng", "🍹 Es Jeruk", "🧉 Kopi Susu"];
+        const finalResults = ["🍵 Matcha Latte", "💚 Matcha Frappe", "🍦 Es Krim Matcha", "🌿 Pure Matcha", "🍰 Matcha Cake"];
 
-        // Gacha spin
         function spinGacha() {
             const resultEl = document.getElementById('gachaResult');
             const commentEl = document.getElementById('gachaComment');
             const btn = document.getElementById('spinBtn');
-            
             btn.disabled = true;
             commentEl.classList.remove('show');
             resultEl.classList.add('spinning');
-            
-            // Fake spinning animation
+            resultEl.classList.remove('glitch');
+            resultEl.style.color = "var(--cream)";
             let spins = 0;
             const spinInterval = setInterval(() => {
-                resultEl.textContent = gachaResults[Math.floor(Math.random() * gachaResults.length)];
+                resultEl.textContent = spinItems[Math.floor(Math.random() * spinItems.length)];
                 spins++;
-                if (spins > 20) {
+                if (spins > 30) {
                     clearInterval(spinInterval);
                     resultEl.classList.remove('spinning');
-                    resultEl.textContent = gachaResults[Math.floor(Math.random() * gachaResults.length)];
-                    commentEl.classList.add('show');
-                    btn.disabled = false;
+                    resultEl.classList.add('glitch'); 
+                    const forcedResult = finalResults[Math.floor(Math.random() * finalResults.length)];
+                    resultEl.textContent = forcedResult;
+                    createGreenConfetti();
                     createHearts();
+                    setTimeout(() => {
+                        commentEl.textContent = "Ups... tombolnya rusak. Harus Matcha berarti.";
+                        commentEl.classList.add('show');
+                        btn.disabled = false;
+                        resultEl.classList.remove('glitch');
+                    }, 500);
                 }
-            }, 100);
+            }, 50);
         }
 
-        // Create falling hearts
         function createHearts() {
             for (let i = 0; i < 15; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.className = 'heart-rain';
+                    heart.className = 'particle heart-rain';
                     heart.textContent = ['💚', '🍵', '✨', '🍃'][Math.floor(Math.random() * 4)];
                     heart.style.left = Math.random() * 100 + 'vw';
                     heart.style.animationDuration = (2 + Math.random() * 2) + 's';
@@ -693,13 +1172,54 @@
             }
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            populateReasons();
-            handleScroll();
-        });
+        function createGreenConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'particle confetti';
+                confetti.style.left = '50%';
+                confetti.style.top = '70%'; 
+                confetti.style.backgroundColor = ['#a8c69f', '#5a6f58', '#00ff00', '#ffffff'][Math.floor(Math.random()*4)];
+                const tx = (Math.random() - 0.5) * 500 + 'px';
+                const ty = (Math.random() - 1) * 500 + 'px';
+                confetti.style.setProperty('--tx', tx);
+                confetti.style.setProperty('--ty', ty);
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 1000);
+            }
+        }
+        
+        // 7. DANGER MODE (INSTANT)
+        function triggerDangerMode() {
+            if (navigator.vibrate) navigator.vibrate(500);
+            const alertBox = document.getElementById('danger-alert');
+            alertBox.classList.add('active');
+            alertBox.style.display = 'flex';
+            document.body.classList.add('mode-danger');
+            document.body.style.animation = 'none';
+            void document.body.offsetWidth; 
+            document.body.style.animation = 'shake 0.5s infinite';
+            setTimeout(() => { document.body.style.animation = 'none'; }, 3000);
+        }
 
-        window.addEventListener('scroll', handleScroll);
+        function restoreNormalMode() {
+            const alertBox = document.getElementById('danger-alert');
+            alertBox.classList.remove('active');
+            alertBox.style.display = 'none';
+            document.body.classList.remove('mode-danger');
+            document.body.style.animation = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateReasons(); });
+        
+        const originalTitle = document.title;
+        const angryTitles = ["JANGAN KABUR WOI!", "Balik sini, belum kelar bacanya...", "Dih, ninggalin...", "Matcha-nya nangis lho...", "HEH MAU KEMANA!"];
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                document.title = angryTitles[Math.floor(Math.random() * angryTitles.length)];
+            } else {
+                document.title = originalTitle;
+            }
+        });
     </script>
 </body>
 </html>
