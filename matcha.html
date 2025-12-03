@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>100 Alasan Kenapa Kamu Harus Suka Matcha</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="matcha.css">
+</head>
+
+<body>
+    <div id="danger-alert" onclick="restoreNormalMode()">
+        <h1>🚨 NINU-NINU 🚨</h1>
+        <p>K-KAMU BERANI NOLAK MATCHA?!</p>
+        <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8;">(Klik layar untuk minta ampun & kembali normal)
+        </p>
+    </div>
+
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <div id="loading-text">Memuat manipulasi pikiran...</div>
+    </div>
+
+    <div id="tc-modal">
+        <div class="tc-content">
+            <h2 class="tc-title" id="modal-title">⚠️ PERINGATAN KERAS ⚠️</h2>
+            <p id="modal-message">Dengan mengakses web ini, Kamu setuju untuk minimal mencicipi satu teguk matcha dalam
+                24 jam ke depan.</p>
+            <p class="tc-subtitle">(Tidak ada tombol close, jangan harap bisa kabur)</p>
+            <button class="tc-btn btn-interactive" onclick="closeModal()">Aku Pasrah dan Setuju 😇</button>
+        </div>
+    </div>
+
+    <div class="mode-toggle" onclick="toggleMatchaMode()">
+        <span id="mode-label">Mode Normal</span>
+        <div class="toggle-switch">
+            <div class="toggle-circle"></div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="doodle doodle-1">🍃</div>
+        <div class="doodle doodle-2">🍵</div>
+        <div class="doodle doodle-3">💚</div>
+        <div class="doodle doodle-4">✨</div>
+        <div class="hero-content">
+            <h1 class="main-title">
+                100 ALASAN<br>
+                <span>KENAPA KAMU</span><br>
+                HARUS SUKA MATCHA
+            </h1>
+            <p class="subtitle">( Scroll ke bawah atau aku ngambek nih 🙄)</p>
+            <button class="cta-btn btn-interactive" onclick="scrollToReasons()">👇 PASRAH AJA TERUS SCROLL KE BAWAH
+                👇</button>
+        </div>
+    </section>
+
+    <section class="reasons-section" id="reasons">
+        <div class="reasons-container" id="reasonsList"></div>
+    </section>
+
+    <section class="gacha-section" id="gacha">
+        <h2 class="gacha-title">GACHA MINUMAN HARI INI</h2>
+        <p class="gacha-subtitle">"Biar mesin ini yang pilihin buat kamu."</p>
+        <div class="gacha-machine">
+            <div class="gacha-display">
+                <div class="gacha-result" id="gachaResult">❓</div>
+            </div>
+            <button class="spin-btn btn-interactive" id="spinBtn" onclick="spinGacha()">🔴 PUTAR TAKDIR 🔴</button>
+        </div>
+        <p class="gacha-comment" id="gachaComment">"Tuh kan, mesinnya aja tau kamu jodohnya sama Matcha. Udah nurut
+            aja."</p>
+    </section>
+
+    <section class="survey-section hidden-initial" id="surveySection">
+        <h2 class="survey-title">Survey Kepuasan (Wajib Isi)</h2>
+        <p style="margin-bottom: 2rem;">Jujur, setelah baca ini jadi pengen Matcha kan?</p>
+        <div class="survey-buttons" id="surveyArea">
+            <button class="btn-survey btn-yes btn-interactive" id="btnYes" style="display: none;"
+                onclick="celebrateMatcha(this)">MAU BANGET 😍</button>
+            <button class="btn-survey btn-no btn-interactive" id="dangerTriggerBtn" onclick="triggerDangerMode()">Enggak
+                😒</button>
+        </div>
+    </section>
+
+    <button id="back-to-top" onclick="scrollToTop()" title="Kembali ke atas">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 4l-8 8h6v8h4v-8h6z" />
+        </svg>
+    </button>
+
+    <footer class="footer hidden-initial" id="footerSection">
+        <div class="disclaimer">⚠️ Disclaimer: Kalau perut mules, itu bukan sakit. Itu Natural Detox alias Matcha lagi
+            ngusir dosa-dosa gorengan kemarin. Harusnya makasih.</div>
+        <div class="divider"></div>
+        <p class="closing-quote">
+            "Intinya: Hati aku <span>full punya kamu</span>,<br>
+            Matcha itu sebenernya Cokelat Putih,<br>
+            cuma lagi <span>cosplay</span> jadi warna Ijo aja."
+        </p>
+        <a href="https://wa.me/6285656608479?text=Aku%20sebenarnya%20suka%20matcha" class="final-btn btn-interactive"
+            target="_blank">IYA DEHH 🙄</a>
+    </footer>
+
+    <script src="matcha.js"></script>
+</body>
+
+</html>
