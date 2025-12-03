@@ -54,27 +54,27 @@
             text-shadow: 0 0 15px var(--sage);
         }
 
-        /* 2. Tombol "Pasrah Aja" */
+        /* 2. Tombol "Pasrah Aja" (Hero) */
         body.mode-matcha .cta-btn {
             background: var(--matcha-light);
             color: #000000;
             box-shadow: 6px 6px 0 var(--sage);
         }
 
-        /* 3. Subtitle Gacha ("Biar mesin ini...") - PERBAIKAN: JADI HITAM */
+        /* 3. Subtitle Gacha */
         body.mode-matcha .gacha-subtitle {
             color: #000000 !important;
-            /* Paksa hitam biar terbaca di background neon */
             font-weight: 700;
             text-shadow: none;
         }
 
-        /* 4. Hasil Gacha ("Matcha Latte") */
+        /* 4. Hasil Gacha ("Matcha Latte") - PERBAIKAN KONTRAS MUTLAK */
         body.mode-matcha .gacha-result {
-            color: #ffffff;
+            color: #ffffff !important;
+            /* !important untuk menimpa inline style JS */
             font-weight: 800;
-            /* Lebih tebal */
-            text-shadow: 0 0 10px var(--sage);
+            text-shadow: 2px 2px 0 #000000;
+            /* Outline hitam biar tajam */
         }
 
         /* 5. Judul Survey */
@@ -83,10 +83,9 @@
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
 
-        /* 6. Teks Paragraf di Survey ("Jujur, setelah baca...") - PERBAIKAN: PAKSA PUTIH */
+        /* 6. Teks Paragraf di Survey */
         body.mode-matcha .survey-section p {
             color: #ffffff !important;
-            /* !important untuk menimpa style inline HTML */
             font-weight: 400;
             font-size: 1.1rem;
         }
@@ -100,10 +99,24 @@
             color: var(--pink-accent);
         }
 
-        /* 8. Tombol "Iya Dehh" */
+        /* 8. Tombol "Iya Dehh" (Footer) */
         body.mode-matcha .final-btn {
             color: #ffffff;
             text-shadow: 1px 1px 0 #000;
+        }
+
+        /* 9. MODAL FIX (Teks Kecil & Tombol) */
+        body.mode-matcha .tc-subtitle {
+            color: #aaaaaa !important;
+            /* Abu terang biar kebaca di background hitam */
+        }
+
+        body.mode-matcha .tc-btn {
+            background: var(--sage);
+            /* Hijau Neon */
+            color: #000000 !important;
+            /* Teks Hitam biar kontras sama neon */
+            box-shadow: 4px 4px 0 #ffffff;
         }
 
         /* Mode Bahaya (Warning Red) */
@@ -313,6 +326,14 @@
             margin-bottom: 1rem;
             transform: rotate(-2deg);
             line-height: 1.2;
+        }
+
+        /* Class khusus untuk subtitle modal biar bisa dikontrol CSS */
+        .tc-subtitle {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: #666;
+            /* Default color */
         }
 
         /* --- FIXED BUTTON STYLE HERE --- */
@@ -1202,8 +1223,8 @@
     <!-- DANGER ALERT -->
     <!-- BUG FIX: Removed ontouchstart to prevent ghost click issue on mobile -->
     <div id="danger-alert" onclick="restoreNormalMode()">
-        <h1>🚨 BUSTER CALL 🚨</h1>
-        <p>BERANI NOLAK MATCHA?!</p>
+        <h1>🚨 NINU NINU 🚨</h1>
+        <p>K-KAMU BERANI NOLAK MATCHA?!</p>
         <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8;">(Klik layar untuk minta ampun & kembali normal)
         </p>
     </div>
@@ -1214,14 +1235,14 @@
         <div id="loading-text">Memuat manipulasi pikiran...</div>
     </div>
 
-    <!-- T&C MODAL -->
+    <!-- REUSABLE MODAL (Dulu namanya T&C MODAL, sekarang jadi Universal Modal) -->
     <div id="tc-modal">
         <div class="tc-content">
-            <h2 class="tc-title">⚠️ PERINGATAN KERAS ⚠️</h2>
-            <p>Dengan mengakses web ini, Kamu setuju untuk minimal mencicipi satu teguk matcha dalam 24 jam ke depan.
-            </p>
-            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">(Tidak ada tombol close, jangan harap bisa
-                kabur)</p>
+            <!-- ID ditambahkan agar bisa diubah lewat JS -->
+            <h2 class="tc-title" id="modal-title">⚠️ PERINGATAN KERAS ⚠️</h2>
+            <p id="modal-message">Dengan mengakses web ini, Kamu setuju untuk minimal mencicipi satu teguk matcha dalam 24 jam ke depan.</p>
+            <!-- Menambahkan Class tc-subtitle dan menghapus inline color biar bisa dikontrol CSS -->
+            <p class="tc-subtitle">(Tidak ada tombol close, jangan harap bisa kabur)</p>
             <button class="tc-btn btn-interactive" onclick="closeModal()">Aku Pasrah dan Setuju 😇</button>
         </div>
     </div>
@@ -1420,19 +1441,32 @@
             loadTextEl.textContent = loadingTexts[loadIdx];
         }, 600);
 
+        // --- NEW MODAL FUNCTION ---
+        function showCustomModal(message, title = "⚠️ PERINGATAN KERAS ⚠️") {
+            const modal = document.getElementById('tc-modal');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('tc-modal').style.display = 'none'; }
+        // --------------------------
+
         window.addEventListener('load', () => {
             setTimeout(() => {
                 clearInterval(loadInterval);
                 document.getElementById('loading-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('tc-modal').style.display = 'flex';
+                    // Show initial T&C
+                    showCustomModal("Dengan mengakses web ini, Kamu setuju untuk minimal mencicipi satu teguk matcha dalam 24 jam ke depan.");
                 }, 500);
             }, 3000);
         });
-
-        // UX FUNCTIONS
-        function closeModal() { document.getElementById('tc-modal').style.display = 'none'; }
 
         function toggleMatchaMode() {
             const body = document.body;
@@ -1441,7 +1475,8 @@
             if (isMatcha) {
                 label.textContent = "Mode Matcha";
                 if (!window.hasAlertedMatcha) {
-                    alert("Maaf, fitur selain warna hijau sedang rusak karena terlalu cinta matcha.");
+                    // REPLACED ALERT WITH CUSTOM MODAL
+                    showCustomModal("Maaf, fitur selain warna hijau sedang rusak karena terlalu cinta matcha.");
                     window.hasAlertedMatcha = true;
                 }
             } else {
@@ -1470,7 +1505,10 @@
             createHearts();
             setTimeout(createGreenConfetti, 500);
             setTimeout(createHearts, 800);
-            setTimeout(() => { alert("Yeay! Akhirnya sadar juga. 💚 Selamat datang di sekte Matcha!"); }, 1000);
+            setTimeout(() => { 
+                // REPLACED ALERT WITH CUSTOM MODAL
+                showCustomModal("BWAHAHAHA.. Selamat datang di sekte Matcha! 😈"); 
+            }, 1000);
         }
 
         // ANIMATION OBSERVER
