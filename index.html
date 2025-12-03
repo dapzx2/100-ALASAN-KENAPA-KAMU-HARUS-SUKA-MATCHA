@@ -384,10 +384,14 @@
             position: relative;
             overflow: hidden;
             transition: all 0.2s ease;
+            touch-action: manipulation;
+            /* Prevent double-tap zoom delay */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-interactive:active {
             transform: scale(0.95) !important;
+            filter: brightness(0.9);
         }
 
         .ripple {
@@ -445,6 +449,31 @@
 
             100% {
                 transform: translate(var(--tx), var(--ty)) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* TOUCH EFFECT (Matcha Dust) */
+        .touch-particle {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--matcha-light) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0);
+            animation: touchPop 0.5s ease-out forwards;
+            z-index: 9999;
+        }
+
+        @keyframes touchPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(2.5);
                 opacity: 0;
             }
         }
@@ -1064,6 +1093,74 @@
             }
         }
 
+        /* BACK TO TOP BUTTON (AESTHETIC VERSION) */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(90, 111, 88, 0.8);
+            /* Sage transparent */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: var(--cream);
+            border-radius: 50%;
+            border: 2px solid var(--cream);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9995;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: var(--sage);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #back-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            transition: transform 0.3s;
+        }
+
+        #back-to-top:hover svg {
+            transform: translateY(-3px);
+        }
+
+        body.mode-matcha #back-to-top {
+            background: rgba(57, 255, 20, 0.2);
+            border: 2px solid var(--matcha-light);
+            color: var(--matcha-light);
+            box-shadow: 0 0 15px var(--sage-dark);
+        }
+
+        body.mode-matcha #back-to-top:hover {
+            background: var(--matcha-light);
+            color: var(--sage-dark);
+            box-shadow: 0 0 25px var(--matcha-light);
+        }
+
+        body.mode-danger #back-to-top {
+            background: rgba(255, 0, 0, 0.8);
+            border: 2px solid white;
+            box-shadow: 4px 4px 0 #8b0000;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -1190,11 +1287,19 @@
         <p style="margin-bottom: 2rem;">Jujur, setelah baca ini jadi pengen Matcha kan?</p>
 
         <div class="survey-buttons" id="surveyArea">
-            <button class="btn-survey btn-yes btn-interactive" onclick="celebrateMatcha(this)">MAU BANGET 😍</button>
+            <button class="btn-survey btn-yes btn-interactive" id="btnYes" style="display: none;"
+                onclick="celebrateMatcha(this)">MAU BANGET 😍</button>
             <button class="btn-survey btn-no btn-interactive" id="dangerTriggerBtn" onclick="triggerDangerMode()">Enggak
                 😒</button>
         </div>
     </section>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button id="back-to-top" onclick="scrollToTop()" title="Kembali ke atas">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 4l-8 8h6v8h4v-8h6z" />
+        </svg>
+    </button>
 
     <!-- FOOTER (INITIALLY HIDDEN) -->
     <footer class="footer hidden-initial" id="footerSection">
@@ -1218,25 +1323,87 @@
     </footer>
 
     <script>
-        // RIPPLE EFFECT
-        document.querySelectorAll('.btn-interactive').forEach(btn => {
+        // RIPPLE EFFECT & HAPTICS
+        function triggerHaptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate(15); // Short vibration
+            }
+        }
+
+        document.querySelectorAll('.btn-interactive, .theme-toggle, #back-to-top, .mode-toggle').forEach(btn => {
             btn.addEventListener('click', function (e) {
-                let ripple = document.createElement('span');
-                ripple.classList.add('ripple');
-                this.appendChild(ripple);
+                triggerHaptic();
 
-                let clientX = e.clientX || e.touches[0].clientX;
-                let clientY = e.clientY || e.touches[0].clientY;
+                // Ripple logic
+                if (this.classList.contains('btn-interactive')) {
+                    let ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
 
-                let x = clientX - this.getBoundingClientRect().left;
-                let y = clientY - this.getBoundingClientRect().top;
+                    let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                    let clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
+                    // Fallback for keyboard or weird clicks
+                    if (!clientX || !clientY) {
+                        const rect = this.getBoundingClientRect();
+                        clientX = rect.left + rect.width / 2;
+                        clientY = rect.top + rect.height / 2;
+                    }
 
-                setTimeout(() => { ripple.remove(); }, 600);
+                    let x = clientX - this.getBoundingClientRect().left;
+                    let y = clientY - this.getBoundingClientRect().top;
+
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+
+                    setTimeout(() => { ripple.remove(); }, 600);
+                }
             });
         });
+
+        // GYROSCOPE PARALLAX (Mobile Only)
+        if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
+            window.addEventListener('deviceorientation', (e) => {
+                const tiltX = e.gamma; // Left/Right tilt (-90 to 90)
+                const tiltY = e.beta;  // Front/Back tilt (-180 to 180)
+
+                if (tiltX !== null && tiltY !== null) {
+                    // Limit the tilt effect
+                    const x = Math.min(Math.max(tiltX, -45), 45) / 2;
+                    const y = Math.min(Math.max(tiltY - 45, -45), 45) / 2; // Adjust base tilt for holding phone
+
+                    document.querySelectorAll('.doodle').forEach((doodle, index) => {
+                        const speed = (index + 1) * 0.5;
+                        doodle.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+                    });
+                }
+            });
+        }
+
+        // GLOBAL TOUCH EFFECT (Matcha Dust)
+        document.addEventListener('click', (e) => {
+            createTouchParticle(e.clientX, e.clientY);
+        });
+
+        // Handle touch separately to support multi-touch if needed, but click covers most 'tap' cases.
+        // Adding touchstart for faster response on mobile
+        document.addEventListener('touchstart', (e) => {
+            for (let i = 0; i < e.touches.length; i++) {
+                createTouchParticle(e.touches[i].clientX, e.touches[i].clientY);
+            }
+        }, { passive: true });
+
+        function createTouchParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('touch-particle');
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 500);
+        }
 
         // LOADING SCREEN
         const loadingTexts = [
@@ -1288,9 +1455,17 @@
         }
 
         function celebrateMatcha(btn) {
+            // STOP DANGER MODE
+            restoreNormalMode();
+
             btn.textContent = "AKU JUGA SAYANG KAMU 🥰";
             btn.style.backgroundColor = "#e8b4b8";
             btn.disabled = true;
+
+            // Hide No button if it's still there
+            const noBtn = document.getElementById('dangerTriggerBtn');
+            if (noBtn) noBtn.style.display = 'none';
+
             createGreenConfetti();
             createHearts();
             setTimeout(createGreenConfetti, 500);
@@ -1521,7 +1696,22 @@
             document.body.style.animation = 'none';
             void document.body.offsetWidth;
             document.body.style.animation = 'shake 0.5s infinite';
-            setTimeout(() => { document.body.style.animation = 'none'; }, 3000);
+
+            // REVEAL YES BUTTON
+            const btnYes = document.getElementById('btnYes');
+            btnYes.style.display = 'inline-block';
+            btnYes.classList.add('reveal-content'); // Add animation
+
+            // Hide No button to force choice? Or keep it? User said "pasti ditekan baru tombol mau banget muncul".
+            // Let's keep No button but maybe disable it or just let the chaos ensue.
+            // Actually, let's hide the No button so they HAVE to click Yes? 
+            // "tombol enggak duluan yang muncul jadi pasti di tekan baru tombol mau banget muncul"
+            // It implies sequence. Let's hide 'Enggak' to be safe or just leave it. 
+            // Better UX: Hide 'Enggak' after click so they focus on 'Yes'.
+            document.getElementById('dangerTriggerBtn').style.display = 'none';
+
+            // Remove auto-stop timeout so they MUST click Yes
+            // setTimeout(() => { document.body.style.animation = 'none'; }, 3000); 
         }
 
         function restoreNormalMode() {
@@ -1543,6 +1733,24 @@
                 document.title = originalTitle;
             }
         });
+
+        // BACK TO TOP LOGIC
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
     </script>
 </body>
 
