@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>100 Alasan Kenapa Kamu Harus Suka Matcha</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@400;600;800&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -31,14 +34,76 @@
         body.mode-matcha {
             --sage: #39ff14;
             --sage-dark: #002200;
-            --cream: #0a0a0a;
+            --cream: #0f0f0f;
+            /* Background gelap untuk kartu */
             --matcha-light: #ccff00;
             --pink-accent: #ff00ff;
-            --text-color: #39ff14;
+            --text-color: #e0ffe0;
+            /* Mint white untuk teks umum */
             --bg-color: #050505;
-            --card-bg: #1f1f1f;
+            --card-bg: #1a1a1a;
             --btn-bg: #ff00ff;
             --btn-shadow: #b300b3;
+        }
+
+        /* --- PERBAIKAN KHUSUS (OVERRIDE WARNA BIAR TERBACA) --- */
+
+        /* 1. Judul Utama (Hero Title) */
+        body.mode-matcha .main-title {
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--sage);
+        }
+
+        /* 2. Tombol "Pasrah Aja" */
+        body.mode-matcha .cta-btn {
+            background: var(--matcha-light);
+            color: #000000;
+            box-shadow: 6px 6px 0 var(--sage);
+        }
+
+        /* 3. Subtitle Gacha ("Biar mesin ini...") - PERBAIKAN: JADI HITAM */
+        body.mode-matcha .gacha-subtitle {
+            color: #000000 !important;
+            /* Paksa hitam biar terbaca di background neon */
+            font-weight: 700;
+            text-shadow: none;
+        }
+
+        /* 4. Hasil Gacha ("Matcha Latte") */
+        body.mode-matcha .gacha-result {
+            color: #ffffff;
+            font-weight: 800;
+            /* Lebih tebal */
+            text-shadow: 0 0 10px var(--sage);
+        }
+
+        /* 5. Judul Survey */
+        body.mode-matcha .survey-title {
+            color: var(--matcha-light);
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        /* 6. Teks Paragraf di Survey ("Jujur, setelah baca...") - PERBAIKAN: PAKSA PUTIH */
+        body.mode-matcha .survey-section p {
+            color: #ffffff !important;
+            /* !important untuk menimpa style inline HTML */
+            font-weight: 400;
+            font-size: 1.1rem;
+        }
+
+        /* 7. Footer Quote */
+        body.mode-matcha .closing-quote {
+            color: #ffffff;
+        }
+
+        body.mode-matcha .closing-quote span {
+            color: var(--pink-accent);
+        }
+
+        /* 8. Tombol "Iya Dehh" */
+        body.mode-matcha .final-btn {
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000;
         }
 
         /* Mode Bahaya (Warning Red) */
@@ -55,12 +120,31 @@
             --btn-shadow: #800000;
             transition: none !important;
         }
-        
-        body.mode-danger .hero { background: #330000; transition: none; }
-        body.mode-danger .main-title span { background: #ff0000; color: #000; }
-        body.mode-danger .gacha-section { background: #8b0000; transition: none; }
-        body.mode-danger .footer { background: #000000; transition: none; }
-        body.mode-danger .survey-section { background: #1a0000; transition: none; }
+
+        body.mode-danger .hero {
+            background: #330000;
+            transition: none;
+        }
+
+        body.mode-danger .main-title span {
+            background: #ff0000;
+            color: #000;
+        }
+
+        body.mode-danger .gacha-section {
+            background: #8b0000;
+            transition: none;
+        }
+
+        body.mode-danger .footer {
+            background: #000000;
+            transition: none;
+        }
+
+        body.mode-danger .survey-section {
+            background: #1a0000;
+            transition: none;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -73,7 +157,7 @@
 
         /* --- UI COMPONENTS --- */
 
-        /* DANGER ALERT (Animation) */
+        /* DANGER ALERT */
         #danger-alert {
             position: fixed;
             top: 0;
@@ -91,19 +175,38 @@
             padding: 1.5rem;
             cursor: pointer;
         }
-        
+
         @keyframes busterCallPop {
-            0% { transform: scale(0.1); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0.1);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes sirenFlash {
-            0% { background: rgba(255, 0, 0, 0.9); }
-            50% { background: rgba(100, 0, 0, 0.9); }
-            100% { background: rgba(255, 0, 0, 0.9); }
+            0% {
+                background: rgba(255, 0, 0, 0.9);
+            }
+
+            50% {
+                background: rgba(100, 0, 0, 0.9);
+            }
+
+            100% {
+                background: rgba(255, 0, 0, 0.9);
+            }
         }
-        
+
         #danger-alert.active {
             display: flex;
             animation: sirenFlash 0.5s infinite;
@@ -112,18 +215,19 @@
         #danger-alert.active h1 {
             animation: busterCallPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        
+
         #danger-alert h1 {
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
-            font-size: clamp(3rem, 12vw, 5rem); 
+            font-size: clamp(2rem, 10vw, 5rem);
+            white-space: nowrap;
             margin-bottom: 1rem;
             line-height: 1;
             text-shadow: 4px 4px 0 #000;
             text-transform: uppercase;
             letter-spacing: -2px;
         }
-        
+
         #danger-alert p {
             font-size: clamp(1rem, 4vw, 1.5rem);
             max-width: 600px;
@@ -146,7 +250,7 @@
             color: var(--cream);
             transition: opacity 0.5s;
         }
-        
+
         #loading-text {
             font-family: 'Caveat', cursive;
             font-size: 2rem;
@@ -164,7 +268,15 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
         /* MODAL */
         #tc-modal {
@@ -173,7 +285,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
             z-index: 9999;
             display: none;
             justify-content: center;
@@ -184,10 +296,9 @@
 
         .tc-content {
             background: var(--cream);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 20px;
-            max-width: 100%;
-            width: 400px;
+            width: min(90%, 600px);
             text-align: center;
             border: 4px solid var(--sage);
             box-shadow: 10px 10px 0 var(--sage-dark);
@@ -196,10 +307,12 @@
 
         .tc-title {
             font-family: 'Caveat', cursive;
-            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-size: clamp(1.2rem, 6vw, 2.5rem);
+            white-space: nowrap;
             color: #d63031;
             margin-bottom: 1rem;
             transform: rotate(-2deg);
+            line-height: 1.2;
         }
 
         /* --- FIXED BUTTON STYLE HERE --- */
@@ -218,7 +331,7 @@
             width: 100%;
             max-width: 250px;
         }
-        
+
         .tc-btn:hover {
             transform: scale(1.05);
         }
@@ -237,7 +350,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
             font-weight: 600;
             font-size: 0.8rem;
             color: var(--text-color);
@@ -262,7 +375,9 @@
             transition: transform 0.3s;
         }
 
-        body.mode-matcha .toggle-circle { transform: translateX(20px); }
+        body.mode-matcha .toggle-circle {
+            transform: translateX(20px);
+        }
 
         /* BUTTONS COMMON & RIPPLE */
         .btn-interactive {
@@ -271,7 +386,9 @@
             transition: all 0.2s ease;
         }
 
-        .btn-interactive:active { transform: scale(0.95) !important; }
+        .btn-interactive:active {
+            transform: scale(0.95) !important;
+        }
 
         .ripple {
             position: absolute;
@@ -282,7 +399,55 @@
             pointer-events: none;
         }
 
-        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* PARTICLE STYLES (Confetti & Hearts) */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .heart-rain {
+            font-size: 1.5rem;
+            animation: fall 3s linear forwards;
+        }
+
+        .confetti {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: popConfetti 0.8s ease-out forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes popConfetti {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.5);
+                opacity: 0;
+            }
+        }
 
         /* HERO */
         .hero {
@@ -305,15 +470,22 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 80%, rgba(168, 198, 159, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(168, 198, 159, 0.1) 0%, transparent 40%);
             animation: floatBg 20s ease-in-out infinite;
         }
 
         @keyframes floatBg {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(-2%, 2%) rotate(5deg); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(-2%, 2%) rotate(5deg);
+            }
         }
 
         .doodle {
@@ -322,14 +494,40 @@
             font-size: clamp(2rem, 8vw, 4rem);
         }
 
-        .doodle-1 { top: 15%; left: 5%; animation: float 6s ease-in-out infinite; }
-        .doodle-2 { top: 25%; right: 10%; animation: float 8s ease-in-out infinite reverse; }
-        .doodle-3 { bottom: 15%; left: 15%; animation: float 7s ease-in-out infinite; }
-        .doodle-4 { bottom: 25%; right: 5%; animation: float 5s ease-in-out infinite reverse; }
+        .doodle-1 {
+            top: 15%;
+            left: 5%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .doodle-2 {
+            top: 25%;
+            right: 10%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .doodle-3 {
+            bottom: 15%;
+            left: 15%;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        .doodle-4 {
+            bottom: 25%;
+            right: 5%;
+            animation: float 5s ease-in-out infinite reverse;
+        }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
         }
 
         .hero-content {
@@ -342,11 +540,11 @@
 
         .main-title {
             font-family: 'Caveat', cursive;
-            font-size: clamp(2.5rem, 11vw, 5.5rem); 
+            font-size: clamp(2.5rem, 11vw, 5.5rem);
             color: var(--cream);
             line-height: 1.1;
             margin-bottom: 1.5rem;
-            text-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
             transform: rotate(-2deg);
             word-wrap: break-word;
         }
@@ -358,7 +556,7 @@
             padding: 0.1em 0.4em;
             transform: rotate(2deg);
             margin: 0.2em 0;
-            border-radius: 5px; 
+            border-radius: 5px;
         }
 
         .subtitle {
@@ -372,8 +570,15 @@
         }
 
         @keyframes wiggle {
-            0%, 100% { transform: rotate(-1deg); }
-            50% { transform: rotate(1deg); }
+
+            0%,
+            100% {
+                transform: rotate(-1deg);
+            }
+
+            50% {
+                transform: rotate(1deg);
+            }
         }
 
         .cta-btn {
@@ -414,7 +619,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 50px; 
+            height: 50px;
             background: var(--sage-dark);
             clip-path: polygon(0 0, 100% 0, 100% 20%, 50% 100%, 0 20%);
         }
@@ -462,20 +667,26 @@
             flex: 1;
         }
 
+        /* PERBAIKAN WARNA TEKS MODE MATCHA */
         body.mode-matcha .reason-text {
-            color: var(--matcha-light);
+            color: #ffffff;
+            /* Teks jadi Putih */
             border: 1px solid var(--sage);
             box-shadow: 4px 4px 0 var(--sage);
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            /* Tambah sedikit bayangan biar makin jelas */
         }
-        
+
         body.mode-danger .reason-text {
             background: #330000;
             color: #ff0000;
             border: 1px solid #ff0000;
             box-shadow: 4px 4px 0 #8b0000;
         }
-        
-        body.mode-danger .reason-number { color: #ff0000; }
+
+        body.mode-danger .reason-number {
+            color: #ff0000;
+        }
 
         .reason-item:nth-child(even) .reason-text {
             background: var(--matcha-light);
@@ -485,10 +696,11 @@
 
         body.mode-matcha .reason-item:nth-child(even) .reason-text {
             background: #2a2a2a;
-            color: var(--sage);
+            color: #ccff00;
+            /* Teks di bubble genap tetep neon biar variasi */
             border: 1px solid var(--sage);
         }
-        
+
         body.mode-danger .reason-item:nth-child(even) .reason-text {
             background: #4d0000;
             color: #ffcccc;
@@ -504,13 +716,15 @@
         }
 
         body.mode-matcha .reason-item:nth-child(5n) .reason-text {
-             background: #2a2a2a;
-             color: var(--pink-accent);
-             border: 1px solid var(--pink-accent);
-             box-shadow: 4px 4px 0 var(--pink-accent);
+            background: #2a2a2a;
+            color: var(--pink-accent);
+            border: 1px solid var(--pink-accent);
+            box-shadow: 4px 4px 0 var(--pink-accent);
         }
 
-        .reason-item:nth-child(7n) .reason-text { transform: rotate(1deg); }
+        .reason-item:nth-child(7n) .reason-text {
+            transform: rotate(1deg);
+        }
 
         /* GACHA */
         .gacha-section {
@@ -522,15 +736,23 @@
             transition: background 0.3s;
         }
 
-        .gacha-section::before, .gacha-section::after {
+        .gacha-section::before,
+        .gacha-section::after {
             content: '🍵';
             position: absolute;
             font-size: clamp(4rem, 10vw, 8rem);
             opacity: 0.1;
         }
 
-        .gacha-section::before { top: 5%; left: -1rem; }
-        .gacha-section::after { bottom: 5%; right: -1rem; }
+        .gacha-section::before {
+            top: 5%;
+            left: -1rem;
+        }
+
+        .gacha-section::after {
+            bottom: 5%;
+            right: -1rem;
+        }
 
         .gacha-title {
             font-family: 'Caveat', cursive;
@@ -547,12 +769,12 @@
             max-width: 90%;
             margin-left: auto;
             margin-right: auto;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.1); 
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
             line-height: 1.4;
         }
 
-        body.mode-matcha .gacha-subtitle { color: var(--cream); }
-        
+        /* body.mode-matcha .gacha-subtitle ditangani di override khusus di atas */
+
         body.mode-danger .gacha-subtitle {
             color: #000;
             background: #ff0000;
@@ -589,12 +811,12 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 4px solid rgba(0,0,0,0.1);
+            border: 4px solid rgba(0, 0, 0, 0.1);
         }
 
         .gacha-result {
             font-family: 'Caveat', cursive;
-            font-size: clamp(1.4rem, 6vw, 2rem); 
+            font-size: clamp(1.4rem, 6vw, 2rem);
             color: var(--cream);
             text-align: center;
             white-space: pre-wrap;
@@ -603,7 +825,7 @@
         }
 
         .gacha-result.spinning {
-            animation: slotSpin 0.05s linear infinite; 
+            animation: slotSpin 0.05s linear infinite;
             filter: blur(1px);
         }
 
@@ -615,23 +837,50 @@
         }
 
         @keyframes slotSpin {
-            0% { transform: translateY(-50px); opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { transform: translateY(50px); opacity: 0.5; }
+            0% {
+                transform: translateY(-50px);
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(50px);
+                opacity: 0.5;
+            }
         }
 
         @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+            0% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                transform: translate(0);
+            }
         }
 
         .spin-btn {
             font-family: 'Caveat', cursive;
-            font-size: clamp(1.1rem, 5vw, 1.5rem); 
+            font-size: clamp(1.1rem, 5vw, 1.5rem);
             background: var(--btn-bg);
             color: white;
             border: none;
@@ -641,7 +890,7 @@
             box-shadow: 4px 4px 0 var(--btn-shadow);
             transition: all 0.2s;
             width: 100%;
-            white-space: nowrap; 
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -665,12 +914,14 @@
             color: var(--cream);
             opacity: 0;
             transition: opacity 0.5s;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
             padding: 0 0.5rem;
         }
 
-        .gacha-comment.show { opacity: 1; }
-        
+        .gacha-comment.show {
+            opacity: 1;
+        }
+
         /* SURVEY */
         .survey-section {
             background: var(--bg-color);
@@ -678,16 +929,18 @@
             text-align: center;
             transition: background 0.3s;
         }
-        
+
         .survey-title {
             font-family: 'Caveat', cursive;
             font-size: clamp(1.5rem, 5vw, 2.5rem);
             color: var(--sage-dark);
             margin-bottom: 2rem;
         }
-        
-        body.mode-danger .survey-title { color: #ff0000; }
-        
+
+        body.mode-danger .survey-title {
+            color: #ff0000;
+        }
+
         .survey-buttons {
             display: flex;
             justify-content: center;
@@ -696,7 +949,7 @@
             position: relative;
             min-height: 100px;
         }
-        
+
         .btn-survey {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
@@ -707,26 +960,26 @@
             transition: all 0.3s;
             font-size: 1rem;
         }
-        
+
         .btn-yes {
             background: var(--sage);
             color: white;
             box-shadow: 4px 4px 0 var(--sage-dark);
             z-index: 2;
         }
-        
+
         .btn-yes:active {
             transform: translateY(4px);
             box-shadow: 0 0 0;
         }
-        
+
         .btn-no {
             background: #e74c3c;
             color: white;
             box-shadow: 4px 4px 0 #c0392b;
-            position: relative; 
+            position: relative;
         }
-        
+
         .btn-no:active {
             transform: translateY(4px);
             box-shadow: 0 0 0;
@@ -741,7 +994,7 @@
         }
 
         .disclaimer {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             padding: 1.5rem;
             border-radius: 15px;
             max-width: 600px;
@@ -769,7 +1022,9 @@
             line-height: 1.4;
         }
 
-        .closing-quote span { color: var(--pink-accent); }
+        .closing-quote span {
+            color: var(--pink-accent);
+        }
 
         .final-btn {
             font-family: 'Caveat', cursive;
@@ -780,16 +1035,44 @@
             padding: 0.8rem 2.5rem;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
             transition: all 0.2s;
             text-decoration: none;
             display: inline-block;
             max-width: 90%;
         }
 
+        /* REVEAL INTERACTION STYLES */
+        .hidden-initial {
+            display: none;
+        }
+
+        .reveal-content {
+            display: block;
+            animation: slideUpFade 1s ease-out forwards;
+        }
+
+        @keyframes slideUpFade {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
         ::-webkit-scrollbar-thumb {
             background: var(--sage);
             border-radius: 10px;
@@ -802,19 +1085,30 @@
                 padding: 0.3rem 0.8rem;
                 font-size: 0.7rem;
             }
-            .tc-title { margin-bottom: 0.5rem; }
-            .tc-content { padding: 1.5rem; }
-            .gacha-machine { padding: 1.2rem; }
-            .gacha-section { padding: 3rem 1rem; }
+
+            .tc-content {
+                padding: 1.5rem;
+            }
+
+            .gacha-machine {
+                padding: 1.2rem;
+            }
+
+            .gacha-section {
+                padding: 3rem 1rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- DANGER ALERT -->
-    <div id="danger-alert" onclick="restoreNormalMode()" ontouchstart="restoreNormalMode()">
+    <!-- BUG FIX: Removed ontouchstart to prevent ghost click issue on mobile -->
+    <div id="danger-alert" onclick="restoreNormalMode()">
         <h1>🚨 BUSTER CALL 🚨</h1>
         <p>BERANI NOLAK MATCHA?!</p>
-        <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8;">(Klik layar untuk minta ampun & kembali normal)</p>
+        <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8;">(Klik layar untuk minta ampun & kembali normal)
+        </p>
     </div>
 
     <!-- LOADING SCREEN -->
@@ -827,9 +1121,11 @@
     <div id="tc-modal">
         <div class="tc-content">
             <h2 class="tc-title">⚠️ PERINGATAN KERAS ⚠️</h2>
-            <p>Dengan mengakses situs ini, Anda setuju untuk minimal mencicipi satu teguk matcha dalam 24 jam ke depan.</p>
-            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">(Tidak ada tombol close, jangan harap bisa kabur)</p>
-            <button class="tc-btn btn-interactive" onclick="closeModal()">Saya Pasrah & Setuju 🍵</button>
+            <p>Dengan mengakses web ini, Kamu setuju untuk minimal mencicipi satu teguk matcha dalam 24 jam ke depan.
+            </p>
+            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">(Tidak ada tombol close, jangan harap bisa
+                kabur)</p>
+            <button class="tc-btn btn-interactive" onclick="closeModal()">Aku Pasrah dan Setuju 😇</button>
         </div>
     </div>
 
@@ -847,16 +1143,16 @@
         <div class="doodle doodle-2">🍵</div>
         <div class="doodle doodle-3">💚</div>
         <div class="doodle doodle-4">✨</div>
-        
+
         <div class="hero-content">
             <h1 class="main-title">
                 100 ALASAN<br>
                 <span>KENAPA KAMU</span><br>
                 HARUS SUKA MATCHA
             </h1>
-            <p class="subtitle">(Scroll ke bawah atau aku ngambek 3 hari)</p>
+            <p class="subtitle">(Scroll ke bawah atau aku ngambek nih 👿)</p>
             <button class="cta-btn btn-interactive" onclick="scrollToReasons()">
-                👇 PASRAH AJA & SCROLL KE BAWAH 👇
+                👇 PASRAH AJA DAN SCROLL KE BAWAH 👇
             </button>
         </div>
     </section>
@@ -870,9 +1166,9 @@
 
     <!-- GACHA SECTION -->
     <section class="gacha-section" id="gacha">
-        <h2 class="gacha-title">GACHA MINUMAN HARI INI</h2> 
+        <h2 class="gacha-title">GACHA MINUMAN HARI INI</h2>
         <p class="gacha-subtitle">"Biar mesin ini yang pilihin buat kamu."</p>
-        
+
         <div class="gacha-machine">
             <div class="gacha-display">
                 <div class="gacha-result" id="gachaResult">❓</div>
@@ -881,38 +1177,42 @@
                 🔴 PUTAR TAKDIR 🔴
             </button>
         </div>
-        
+
         <p class="gacha-comment" id="gachaComment">
             "Tuh kan, mesinnya aja tau kamu jodohnya sama Matcha. Udah nurut aja."
         </p>
     </section>
-    
-    <!-- SURVEY SECTION -->
-    <section class="survey-section">
+
+    <!-- SURVEY SECTION (INITIALLY HIDDEN) -->
+    <section class="survey-section hidden-initial" id="surveySection">
         <h2 class="survey-title">Survey Kepuasan (Wajib Isi)</h2>
-        <p style="margin-bottom: 2rem; color: var(--sage-dark);">Jujur, setelah baca ini jadi pengen Matcha kan?</p>
-        
+        <!-- FIX: REMOVED INLINE STYLE TO ALLOW CSS OVERRIDE -->
+        <p style="margin-bottom: 2rem;">Jujur, setelah baca ini jadi pengen Matcha kan?</p>
+
         <div class="survey-buttons" id="surveyArea">
             <button class="btn-survey btn-yes btn-interactive" onclick="celebrateMatcha(this)">MAU BANGET 😍</button>
-            <button class="btn-survey btn-no btn-interactive" id="dangerTriggerBtn" ontouchstart="triggerDangerMode()" onclick="triggerDangerMode()">Enggak 😒</button>
+            <button class="btn-survey btn-no btn-interactive" id="dangerTriggerBtn" onclick="triggerDangerMode()">Enggak
+                😒</button>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
+    <!-- FOOTER (INITIALLY HIDDEN) -->
+    <footer class="footer hidden-initial" id="footerSection">
         <div class="disclaimer">
-            ⚠️ Disclaimer: Kalau perut mules, itu bukan sakit. Itu Natural Detox alias Matcha lagi ngusir dosa-dosa gorengan kemarin. Harusnya makasih.
+            ⚠️ Disclaimer: Kalau perut mules, itu bukan sakit. Itu Natural Detox alias Matcha lagi ngusir dosa-dosa
+            gorengan kemarin. Harusnya makasih.
         </div>
-        
+
         <div class="divider"></div>
-        
+
         <p class="closing-quote">
             "Intinya: Hati aku <span>full punya kamu</span>,<br>
-            dan percayalah ini sebenernya Cokelat Putih kok,<br>
+            Matcha itu sebenernya Cokelat Putih,<br>
             cuma lagi <span>cosplay</span> jadi warna Ijo aja."
         </p>
-        
-        <a href="https://wa.me/" class="final-btn btn-interactive" target="_blank">
+
+        <a href="https://wa.me/6285656608479?text=Aku%20sebenarnya%20suka%20matcha" class="final-btn btn-interactive"
+            target="_blank">
             IYA DEHH 🙄
         </a>
     </footer>
@@ -920,20 +1220,20 @@
     <script>
         // RIPPLE EFFECT
         document.querySelectorAll('.btn-interactive').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+            btn.addEventListener('click', function (e) {
                 let ripple = document.createElement('span');
                 ripple.classList.add('ripple');
                 this.appendChild(ripple);
-                
+
                 let clientX = e.clientX || e.touches[0].clientX;
                 let clientY = e.clientY || e.touches[0].clientY;
-                
+
                 let x = clientX - this.getBoundingClientRect().left;
                 let y = clientY - this.getBoundingClientRect().top;
-                
+
                 ripple.style.left = `${x}px`;
                 ripple.style.top = `${y}px`;
-                
+
                 setTimeout(() => { ripple.remove(); }, 600);
             });
         });
@@ -951,7 +1251,7 @@
         const loadInterval = setInterval(() => {
             loadIdx = (loadIdx + 1) % loadingTexts.length;
             loadTextEl.textContent = loadingTexts[loadIdx];
-        }, 600); 
+        }, 600);
 
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -961,7 +1261,7 @@
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('tc-modal').style.display = 'flex';
                 }, 500);
-            }, 3000); 
+            }, 3000);
         });
 
         // UX FUNCTIONS
@@ -973,7 +1273,7 @@
             const isMatcha = body.classList.toggle('mode-matcha');
             if (isMatcha) {
                 label.textContent = "Mode Matcha";
-                if(!window.hasAlertedMatcha) {
+                if (!window.hasAlertedMatcha) {
                     alert("Maaf, fitur selain warna hijau sedang rusak karena terlalu cinta matcha.");
                     window.hasAlertedMatcha = true;
                 }
@@ -1020,112 +1320,112 @@
             });
         }
 
-        // DATA
+        // --- DATA ---
         const reasons = [
-            "Anggap aja lagi simulasi jadi sapi estetik di Swiss 🐄✨",
+            "Anggap aja lagi simulasi jadi sapi estetik di Swiss 🐄",
             "Rasanya unik, seunik kamu (eaaa) 🥰",
             "Pahitnya dikit kok, lebih banyak manisnya kayak senyum kamu ☺️",
             "Lidah kamu cuma kaget, belum kenalan aja sama rasanya 😋",
-            "Biar feed Instagram kita warnanya ijo estetik 📸🍃",
+            "Biar feed Instagram kita warnanya ijo estetik 📸",
             "Liat bubuknya deh, halus banget kayak bedak mahal ✨",
-            "Ini bukan jus kangkung, sumpah ✌️😂",
-            "Orang Jepang panjang umur gara-gara ini (katanya)🙏",
-            "Kalau kamu merem, rasanya mirip cokelat (harus pake imajinasi tinggi) 🍫🙄",
-            "Gak bikin deg-degan, malah bikin tenang 🧘‍♂️✨",
-            "Teksturnya creamy, lembut banget di tenggorokan 😋🥛",
-            "Sekali aja. Seteguk. Plis 🙏🥺",
-            "Ini tren global, yuk kita cobain bareng 🌏👫",
-            "Karena aku udah capek-capek bikin web ini dengan penuh cinta 💻❤️",
+            "Ini bukan jus kangkung, sumpah ✌️",
+            "Orang Jepang panjang umur gara-gara ini (katanya) 🙏",
+            "Kalau kamu merem, rasanya mirip cokelat (harus pake imajinasi tinggi) 🍫",
+            "Gak bikin deg-degan, malah bikin tenang 🧘‍♂️",
+            "Teksturnya creamy, lembut banget di tenggorokan 🥛",
+            "Sekali aja. Seteguk. Plis 🥺",
+            "Ini tren global, yuk kita cobain bareng 🌏",
+            "Karena aku udah capek-capek bikin web ini dengan penuh cinta 💻",
             "Kamu gak suka matcha = Gak apa-apa, aku tetap suka kamu 🥰",
-            "Kata ramalan bintang, kita cocok. Matcha cuma pelengkap aja ✨🔮",
-            "Franky bilang lidah kamu butuh modifikasi SUPER biar bisa ngerasain enaknya Matcha! ⭐🤖",
-            "Dokter bilang sering-sering liat warna hijau itu bagus buat mata. Anggap aja ini terapi mata gratis sambil minum. 🤓🌿",
-            "Rambut Zoro warna hijau dan dia keren banget. Matcha juga hijau, jadi secara logika... Matcha itu keren. ⚔️💚",
-            "Lampu hijau artinya jalan. Matcha artinya jalanin aja dulu 🚦💚",
-            "Enakan minum berdua tau daripada aku sendirian 🥺👫",
-            "Semut aja suka yang manis-manis, ini manis lho (udah aku mintain gula) 🐜🍬",
-            "Coba minumnya sambil kayang, pasti sensasinya beda 🤸‍♂️🤪",
-            "Setiap kali ada yang nolak matcha, satu peri teh di dunia kehilangan sayapnya. Tega kamu? 🧚‍♀️💔",
-            "Jangan benci dulu sebelum kenal deket 🛑✋",
-            "Antioksidannya tinggi, bisa menangkal radikal bebas dan omongan tetangga 🛡️🗣️",
-            "Kamu phobia warna hijau apa gimana? 😱🟢",
-            "Kandungan klorofilnya bagus buat fotosintesis (kalau kamu tanaman) 🌱☀️",
-            "Tanda-tanda orang bahagia itu suka nyoba hal baru 😁✨",
-            "Mungkin selera kamu emang yang manis-manis banget (kayak aku) 🍬🥰",
-            "Rasanya earthy, definisi 'membumi' yang sesungguhnya 🌍🧘‍♀️",
-            "Kata pakar, rasa matcha itu acquired taste (artinya: paksa dulu baru suka) 😈📚",
-            "Anggap aja ini tanda kecocokan kita 🧩❤️",
-            "Coba liat mataku yang penuh harap ini 🥺🙏",
-            "Kalau gak suka, anggap aja lagi challenge Fear Factor versi lite 😈🤢",
+            "Kata ramalan bintang, kita cocok. Matcha cuma pelengkap aja 🔮",
+            "Franky bilang lidah kamu butuh modifikasi SUPER biar bisa ngerasain enaknya Matcha! 🤖",
+            "Dokter bilang sering-sering liat warna hijau itu bagus buat mata. Anggap aja ini terapi mata gratis sambil minum. 🤓",
+            "Rambut Zoro warna hijau dan dia keren banget. Matcha juga hijau, jadi secara logika... Matcha itu keren. ⚔️",
+            "Lampu hijau artinya jalan. Matcha artinya jalanin aja dulu 🚦",
+            "Enakan minum berdua tau daripada aku sendirian 👫",
+            "Semut aja suka yang manis-manis, ini manis lho (udah aku mintain gula) 🐜",
+            "Coba minumnya sambil kayang, pasti sensasinya beda 🤸‍♂️",
+            "Setiap kali ada yang nolak matcha, satu peri teh di dunia kehilangan sayapnya. Tega kamu? 🧚‍♀️",
+            "Jangan benci dulu sebelum kenal deket ✋",
+            "Antioksidannya tinggi, bisa menangkal radikal bebas dan omongan tetangga 🛡️",
+            "Kamu phobia warna hijau apa gimana? 😱",
+            "Kandungan klorofilnya bagus buat fotosintesis (kalau kamu tanaman) 🌱",
+            "Tanda-tanda orang bahagia itu suka nyoba hal baru 😁",
+            "Mungkin selera kamu emang yang manis-manis banget (kayak aku) 🍬",
+            "Rasanya earthy, definisi 'membumi' yang sesungguhnya 🧘‍♀️",
+            "Kata pakar, rasa matcha itu acquired taste (artinya: paksa dulu baru suka) 😈",
+            "Anggap aja ini tanda kecocokan kita 🧩",
+            "Coba liat mataku yang penuh harap ini 🥺",
+            "Kalau gak suka, anggap aja lagi challenge Fear Factor versi lite 🤢",
             "Ini teh jepang asli, bukan jus rumput tetangga kok 🍵",
-            "Diaduknya pakai perasaan tau, hargai kerja keras sendoknya dong! 🥄😤",
-            "Kucing lewat aja ngeong, artinya dia dukung kita 🐱💖",
-            "Petualangan rasa baru biar hidup makin berwarna 🌈✨",
-            "Kita suit. Kalau aku menang, kamu minum ✌️✊🖐️",
-            "Kalau kamu menang, kamu tetep minum (aturan tetaplah aturann) 😈📜",
-            "Biar organ dalam kaget dikasih yang sehat, biasanya kan isinya gorengan mulu 🍤😱",
-            "Sekali seumur hidup kok (besok terserah kamu deh) 🗓️🙏",
-            "Buat menuhin kuota \"Mencoba Hal Baru\" tahun ini ✅📝",
-            "Zat L-Theanine di dalamnya bikin rileks, cocok buat ngadepin drama hidup 😌🎭",
-            "Minum ini bikin level kultivasi naik ke tingkat Immortal (kata manhwa) 🧘‍♂️⚡",
-            "Jiwa petualang kayak kamu pasti berani coba 🗺️🤠",
-            "Kalau diminum sambil merem, rasanya... tetep rasa matcha sih 🙄🍵",
-            "Ini sebenernya daun teh yang ditumbuk penuh dedikasi (dan emosi) 🌿💪",
-            "Coba dulu, kalau gak enak... yaudah telen aja buruan 😈🥃",
-            "Rasanya kayak rumput laut tapi versi dessert mahal 🌊🍰",
-            "Biar pencernaan lancar jaya kayak jalan tol jam 3 pagi 🛣️💩",
-            "Siapa tau habis minum dapet ilham bisa lihat masa depan 💡🔮",
-            "Kalau minum ini, auto berasa jadi warga lokal Kyoto ⛩️🎎",
+            "Diaduknya pakai perasaan tau, hargai kerja keras sendoknya dong! 🥄",
+            "Kucing lewat aja ngeong, artinya dia dukung kita 🐱",
+            "Petualangan rasa baru biar hidup makin berwarna 🌈",
+            "Kita suit. Kalau aku menang, kamu minum ✌️",
+            "Kalau kamu menang, kamu tetep minum (aturan tetaplah aturann) 📜",
+            "Biar organ dalam kaget dikasih yang sehat, biasanya kan isinya gorengan mulu 🍤",
+            "Sekali seumur hidup kok (besok terserah kamu deh) 🗓️",
+            "Buat menuhin kuota \"Mencoba Hal Baru\" tahun ini ✅",
+            "Zat L-Theanine di dalamnya bikin rileks, cocok buat ngadepin drama hidup 😌",
+            "Minum ini bikin level kultivasi naik ke tingkat Immortal (kata manhwa) ⚡",
+            "Jiwa petualang kayak kamu pasti berani coba 🤠",
+            "Kalau diminum sambil merem, rasanya... tetep rasa matcha sih 🙄",
+            "Ini sebenernya daun teh yang ditumbuk penuh dedikasi (dan emosi) 🌿",
+            "Coba dulu, kalau gak enak... yaudah telen aja buruan 😈",
+            "Rasanya kayak rumput laut tapi versi dessert mahal 🍰",
+            "Biar pencernaan lancar jaya kayak jalan tol jam 3 pagi 🛣️",
+            "Siapa tau habis minum dapet ilham bisa lihat masa depan 🔮",
+            "Kalau minum ini, auto berasa jadi warga lokal Kyoto ⛩️",
             "Ini ijonya natural, gak kayak janji manis pemerintah 🙏",
             "Ayo dong, bub...",
-            "Yaudahlah ya, namanya juga usaha 🤷‍♂️😅",
+            "Yaudahlah ya, namanya juga usaha 🤷‍♂️",
             "Iseng aja sih pengen liat ekspresi kamu pas lagi coba 😋",
-            "Rasanya unik, bikin bingung tapi penasaran kan? 🤔❓",
-            "Kata Google ini sehat, tapi kata aku ini enak 😋📱",
-            "Luffy kalau ga makan daging pasti minum ini (biar kuat jadi Raja Bajak Laut) 🍖🏴‍☠️",
-            "Plis dong... 🙏🥺",
-            "Dikit aja... 🤏🥺",
-            "Baunya doang? 👃🍵",
-            "Pegang gelasnya doang? 🤲🥤",
-            "Foto sama gelasnya? 📸✌️",
-            "Masih gak mau juga? 🙄😤",
-            "Aku aja bisa nyasar ke hati kamu, masa matcha enggak? ⚔️💚",
-            "Aku harus loncat loncat dulu biar kamu mau? 🦘🥺",
-            "Atau salto? 🤸‍♂️💨",
-            "Dibuat dengan teknik rahasia biar rasanya nyampe ke hati (eaakk) 😍💘",
-            "Ayolah... 🙏😫",
-            "Jangan biarkan aku menikmati kelezatan ini sendirian 🥺🍵",
-            "Matcha itu temennya Susu. Kamu suka Susu kan? ehh aku deng yang suka susu 😋🥛",
-            "Chopper bilang ini obat paling ampuh buat hati yang galau 🦌⚕️",
-            "Karena aku sayang kamu (ini alasan paling valid) 🥰❤️",
-            "Matcha emang pait dikit, tapi kamu penawarnya 💊🥰",
-            "Aku cuma pengen liat kamu ketawa baca ini 😁📖",
-            "Kamu jauh lebih penting daripada bubuk hijau ini 🥺💚",
-            "Nami pasti minta bayaran mahal buat resep ini, tapi buat kamu gratis 💰🍊",
-            "Kalau enggak, aku tetep sayang kok 🥰🤗",
-            "Makasih udah baca sampe poin 82 🙏📚",
-            "Rajin banget bacanya, pasti sayang aku juga 🥰👀",
-            "Pasti lagi senyum-senyum sendiri kan? ☺️😏",
-            "Tuh kan ketawa 😁😆",
-            "Cantik tau kalau lagi ketawa 🥰✨",
-            "Rasanya selegendaris One Piece (harta karun) 🏴‍☠️💰",
-            "Gak maksa kok (tapi berharap) 😈🤞",
-            "Cintaku cuma buat kamu, Matcha cuma pelengkap suasana ❤️🍵",
-            "Apapun minumannya, yang penting duduknya sama kamu 🪑👫",
-            "Kalau tetep gak mau, yaudah aku abisin dua-duanya (aku kuat) 💪😋",
-            "Aku minum matcha, kamu minum senyuman aku aja 😁🥤",
-            "Kita cocok, kayak susu dan matcha yang perfect blend 🥛🍵",
-            "Love you cantikk 🥰❤️",
-            "Udah mau abis nih list-nya 🔚📜",
-            "Masih gak mau berubah pikiran? 🙄🤔",
-            "Yakin? 🤨❓",
-            "Beneran yakin? 😈🔥",
-            "Yaudah deh aku ngalah demi kamu 🏳️😔",
-            "Coba cek takdir minuman kamu di bawah dehh sayangg 💚👇"
+            "Rasanya unik, bikin bingung tapi penasaran kan? 🤔",
+            "Kata Google ini sehat, tapi kata aku ini enak 📱",
+            "Luffy kalau ga makan daging pasti minum ini (biar kuat jadi Raja Bajak Laut) 🍖",
+            "Plis dong... 🥺",
+            "Dikit aja... 🤏",
+            "Baunya doang? 👃",
+            "Pegang gelasnya doang? 🤲",
+            "Foto sama gelasnya? 📸",
+            "Masih gak mau juga? 😤",
+            "Aku aja bisa nyasar ke hati kamu, masa matcha enggak? ⚔️",
+            "Aku harus loncat loncat dulu biar kamu mau? 🦘",
+            "Atau salto? 🤸‍♂️",
+            "Dibuat dengan teknik rahasia biar rasanya nyampe ke hati (eaakk) 💘",
+            "Ayolah... 🙏",
+            "Jangan biarkan aku menikmati kelezatan ini sendirian 🍵",
+            "Matcha itu temennya Susu. Kamu suka Susu kan? ehh aku deng yang suka susu 🥛",
+            "Chopper bilang ini obat paling ampuh buat hati yang galau 🦌",
+            "Karena aku sayang kamu (ini alasan paling valid) ❤️",
+            "Matcha emang pait dikit, tapi kamu penawarnya 💊",
+            "Aku cuma pengen liat kamu ketawa baca ini 📖",
+            "Kamu jauh lebih penting daripada bubuk hijau ini 💚",
+            "Nami pasti minta bayaran mahal buat resep ini, tapi buat kamu gratis 💰",
+            "Kalau enggak, aku tetep sayang kok 🤗",
+            "Makasih udah baca sampe poin 82 📚",
+            "Rajin banget bacanya, pasti sayang aku juga 👀",
+            "Pasti lagi senyum-senyum sendiri kan? 😏",
+            "Tuh kan ketawa 😆",
+            "Cantik tau kalau lagi ketawa ✨",
+            "Rasanya selegendaris One Piece (harta karun) 🏴‍☠️",
+            "Gak maksa kok (tapi berharap) 🤞",
+            "Cintaku cuma buat kamu, Matcha cuma pelengkap suasana 🍵",
+            "Apapun minumannya, yang penting duduknya sama kamu 🪑",
+            "Kalau tetep gak mau, yaudah aku abisin dua-duanya (aku kuat) 💪",
+            "Aku minum matcha, kamu minum senyuman aku aja 😁",
+            "Kita cocok, kayak susu dan matcha yang perfect blend 🍵",
+            "Love you cantikk ❤️",
+            "Udah mau abis nih list-nya 🔚",
+            "Masih gak mau berubah pikiran? 🤔",
+            "Yakin? 🤨",
+            "Beneran yakin? 🔥",
+            "Yaudah deh aku ngalah demi kamu 🏳️",
+            "Coba cek takdir minuman kamu di bawah dehh sayangg 👇"
         ];
 
         const spinItems = ["☕ Kopi Hitam", "🧋 Boba Milk Tea", "🥤 Air Putih", "🍺 Teh Obeng", "🍹 Es Jeruk", "🧉 Kopi Susu"];
-        const finalResults = ["🍵 Matcha Latte", "💚 Matcha Frappe", "🍦 Es Krim Matcha", "🌿 Pure Matcha", "🍰 Matcha Cake"];
+        const finalResults = ["🍵 Matcha Latte", "💚 Matcha Frappe", "🍦 Es Krim Matcha", "🌿 Pure Matcha"];
 
         function spinGacha() {
             const resultEl = document.getElementById('gachaResult');
@@ -1143,7 +1443,7 @@
                 if (spins > 30) {
                     clearInterval(spinInterval);
                     resultEl.classList.remove('spinning');
-                    resultEl.classList.add('glitch'); 
+                    resultEl.classList.add('glitch');
                     const forcedResult = finalResults[Math.floor(Math.random() * finalResults.length)];
                     resultEl.textContent = forcedResult;
                     createGreenConfetti();
@@ -1153,9 +1453,32 @@
                         commentEl.classList.add('show');
                         btn.disabled = false;
                         resultEl.classList.remove('glitch');
+
+                        // NEW LOGIC: Reveal Survey & Footer
+                        revealEndContent();
                     }, 500);
                 }
             }, 50);
+        }
+
+        function revealEndContent() {
+            const survey = document.getElementById('surveySection');
+            const footer = document.getElementById('footerSection');
+
+            // Cek apakah masih tersembunyi, kalau iya baru dibuka
+            if (survey.classList.contains('hidden-initial')) {
+                // Hapus class hidden, tambah class reveal (animasi)
+                survey.classList.remove('hidden-initial');
+                survey.classList.add('reveal-content');
+
+                footer.classList.remove('hidden-initial');
+                footer.classList.add('reveal-content');
+
+                // Scroll otomatis ke bawah dikit biar user sadar ada konten baru
+                setTimeout(() => {
+                    survey.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 800);
+            }
         }
 
         function createHearts() {
@@ -1177,8 +1500,8 @@
                 const confetti = document.createElement('div');
                 confetti.className = 'particle confetti';
                 confetti.style.left = '50%';
-                confetti.style.top = '70%'; 
-                confetti.style.backgroundColor = ['#a8c69f', '#5a6f58', '#00ff00', '#ffffff'][Math.floor(Math.random()*4)];
+                confetti.style.top = '70%';
+                confetti.style.backgroundColor = ['#a8c69f', '#5a6f58', '#00ff00', '#ffffff'][Math.floor(Math.random() * 4)];
                 const tx = (Math.random() - 0.5) * 500 + 'px';
                 const ty = (Math.random() - 1) * 500 + 'px';
                 confetti.style.setProperty('--tx', tx);
@@ -1187,7 +1510,7 @@
                 setTimeout(() => confetti.remove(), 1000);
             }
         }
-        
+
         // 7. DANGER MODE (INSTANT)
         function triggerDangerMode() {
             if (navigator.vibrate) navigator.vibrate(500);
@@ -1196,7 +1519,7 @@
             alertBox.style.display = 'flex';
             document.body.classList.add('mode-danger');
             document.body.style.animation = 'none';
-            void document.body.offsetWidth; 
+            void document.body.offsetWidth;
             document.body.style.animation = 'shake 0.5s infinite';
             setTimeout(() => { document.body.style.animation = 'none'; }, 3000);
         }
@@ -1210,7 +1533,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => { populateReasons(); });
-        
+
         const originalTitle = document.title;
         const angryTitles = ["JANGAN KABUR WOI!", "Balik sini, belum kelar bacanya...", "Dih, ninggalin...", "Matcha-nya nangis lho...", "HEH MAU KEMANA!"];
         document.addEventListener('visibilitychange', () => {
@@ -1222,4 +1545,5 @@
         });
     </script>
 </body>
+
 </html>
