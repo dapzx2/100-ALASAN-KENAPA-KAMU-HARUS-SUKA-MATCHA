@@ -1,3 +1,5 @@
+````markdown
+```text
    __  __       _       _            _____                                           _       
   |  \/  |     | |     | |          |  __ \                                         | |      
   | \  / | __ _| |_ ___| |__   __ _ | |__) | __ ___  _ __   __ _  __ _  __ _ _ __ __| | __ _ 
@@ -9,127 +11,107 @@
   > SYSTEM STATUS: ONLINE
   > TARGET: HUMAN PSYCHE MANIPULATION (VIA MATCHA)
   > VERSION: 1.3.0
+````
 
+# 100 Alasan Kenapa Kamu Harus Suka Matcha
 
-100 Alasan Kenapa Kamu Harus Suka Matcha
-
-Sebuah single-page application (SPA) interaktif yang dirancang sebagai bentuk "kampanye digital" untuk mempromosikan Matcha. Proyek ini dibangun untuk mendemonstrasikan kemampuan manipulasi DOM, animasi CSS tingkat lanjut, dan logika JavaScript tanpa ketergantungan pada framework eksternal.
+Sebuah *single-page application* (SPA) interaktif yang dirancang sebagai bentuk "kampanye digital" untuk mempromosikan Matcha. Proyek ini dibangun untuk mendemonstrasikan kemampuan manipulasi DOM, animasi CSS tingkat lanjut, dan logika JavaScript tanpa ketergantungan pada *framework* eksternal.
 
 Website ini memiliki elemen psikologis yang humoris, di mana pengguna "dipaksa" secara halus untuk menyetujui bahwa Matcha adalah minuman terbaik melalui interaksi antarmuka (UI) yang manipulatif namun estetis.
 
-[ FITUR UTAMA ]
+-----
 
-1. Sistem Tema Dinamis (Dynamic Theming)
+## [ FITUR UTAMA ]
 
-Aplikasi ini mendukung pergantian tema secara real-time yang mengubah variabel CSS (:root) untuk memberikan nuansa yang berbeda:
+### 1\. Sistem Tema Dinamis (Dynamic Theming)
 
-Normal Mode (Sage): Tampilan default yang tenang dan minimalis.
+Aplikasi ini mendukung pergantian tema secara *real-time* yang mengubah variabel CSS (`:root`) untuk memberikan nuansa yang berbeda:
 
-Matcha Mode (Neon): Mode high-contrast dengan skema warna gelap dan aksen hijau neon.
+  * **Normal Mode (Sage):** Tampilan *default* yang tenang dan minimalis.
+  * **Matcha Mode (Neon):** Mode *high-contrast* dengan skema warna gelap dan aksen hijau neon.
+  * **Danger Mode:** Mode peringatan yang dipicu oleh interaksi negatif pengguna, lengkap dengan animasi guncangan (*screen shake*) dan overlay merah.
 
-Danger Mode: Mode peringatan yang dipicu oleh interaksi negatif pengguna, lengkap dengan animasi guncangan (screen shake) dan overlay merah.
-
-2. Mekanisme Gacha (RNG Manipulation)
+### 2\. Mekanisme Gacha (RNG Manipulation)
 
 Fitur simulasi mesin slot untuk pemilihan minuman.
 
-Logika Deterministik: Meskipun terlihat acak, algoritma telah diatur untuk selalu menghasilkan varian "Matcha" setelah sejumlah putaran tertentu.
+  * **Logika Deterministik:** Meskipun terlihat acak, algoritma telah diatur untuk selalu menghasilkan varian "Matcha" setelah sejumlah putaran tertentu.
+  * **Visual Feedback:** Teks hasil akhir dilengkapi dengan efek *glitch* CSS untuk menambah kesan dramatis.
 
-Visual Feedback: Teks hasil akhir dilengkapi dengan efek glitch CSS untuk menambah kesan dramatis.
+### 3\. Komponen UI Kustom
 
-3. Komponen UI Kustom
+Menghindari penggunaan `window.alert()` bawaan browser demi pengalaman pengguna (UX) yang lebih imersif.
 
-Menghindari penggunaan window.alert() bawaan browser demi pengalaman pengguna (UX) yang lebih imersif.
+  * **Custom Modal:** Jendela *pop-up* dengan desain yang konsisten dengan tema.
+  * **Animasi Masuk:** Modal muncul dengan efek *overshoot/bouncy* menggunakan kurva Bezier kustom.
+  * **Dark Pattern UX (Satire):** Tombol penutup sengaja dihilangkan pada *Terms & Condition* awal sebagai bagian dari narasi humor proyek.
 
-Custom Modal: Jendela pop-up dengan desain yang konsisten dengan tema.
+### 4\. Interaksi Mikro & Partikel
 
-Animasi Masuk: Modal muncul dengan efek overshoot/bouncy menggunakan kurva Bezier kustom.
+  * **Cursor Trail:** Partikel debu hijau mengikuti posisi kursor atau sentuhan layar.
+  * **Ripple Effect:** Efek gelombang air visual saat tombol diklik (diimplementasikan via JS & CSS).
+  * **Parallax Background:** Elemen latar belakang bergerak merespons gyroscope pada perangkat *mobile*.
 
-Dark Pattern UX (Satire): Tombol penutup sengaja dihilangkan pada Terms & Condition awal sebagai bagian dari narasi humor proyek.
-
-4. Interaksi Mikro & Partikel
-
-Cursor Trail: Partikel debu hijau mengikuti posisi kursor atau sentuhan layar.
-
-Ripple Effect: Efek gelombang air visual saat tombol diklik (diimplementasikan via JS & CSS).
-
-Parallax Background: Elemen latar belakang bergerak merespons gyroscope pada perangkat mobile.
-
-5. Integrasi AI Chatbot (Beta)
+### 5\. Integrasi AI Chatbot (Beta)
 
 Asisten virtual "MatchaBot" yang terintegrasi menggunakan Gemini API.
 
-Berperan sebagai persona yang obsesif terhadap Matcha.
+  * Berperan sebagai persona yang obsesif terhadap Matcha.
+  * Mampu menjawab pertanyaan pengguna dengan konteks spesifik mengenai Matcha.
 
-Mampu menjawab pertanyaan pengguna dengan konteks spesifik mengenai Matcha.
+-----
 
-[ TEKNOLOGI ]
+## [ TEKNOLOGI ]
 
-Proyek ini dibangun dengan pendekatan Vanilla (Tanpa Framework) untuk performa maksimal dan ukuran file yang minimal.
+Proyek ini dibangun dengan pendekatan **Vanilla (Tanpa Framework)** untuk performa maksimal dan ukuran file yang minimal.
 
-Komponen
+| Komponen | Teknologi | Deskripsi |
+| :--- | :--- | :--- |
+| **Markup** | HTML5 | Struktur semantik dan aksesibilitas dasar. |
+| **Styling** | CSS3 | Variabel CSS, Keyframe Animation, Flexbox/Grid. |
+| **Scripting** | JavaScript (ES6+) | Logika DOM, Event Handling, Fetch API. |
+| **AI Engine** | Google Gemini API | Pemrosesan bahasa alami untuk fitur Chatbot. |
 
-Teknologi
+-----
 
-Deskripsi
+## [ STRUKTUR PROYEK ]
 
-Markup
+Proyek ini menganut arsitektur **Monolith (Single File)** untuk kemudahan distribusi dan *deployment*.
 
-HTML5
-
-Struktur semantik dan aksesibilitas dasar.
-
-Styling
-
-CSS3
-
-Variabel CSS, Keyframe Animation, Flexbox/Grid.
-
-Scripting
-
-JavaScript (ES6+)
-
-Logika DOM, Event Handling, Fetch API.
-
-AI Engine
-
-Google Gemini API
-
-Pemrosesan bahasa alami untuk fitur Chatbot.
-
-[ STRUKTUR PROYEK ]
-
-Proyek ini menganut arsitektur Monolith (Single File) untuk kemudahan distribusi dan deployment.
-
+```text
 /
 ├── index.html          # Berisi seluruh kode (HTML, CSS, JS)
 └── README.md           # Dokumentasi proyek
+```
 
+-----
 
-[ CARA MENJALANKAN ]
+## [ CARA MENJALANKAN ]
 
-Karena proyek ini tidak memerlukan proses build atau bundling (seperti Webpack/Vite), cara menjalankannya sangat sederhana:
+Karena proyek ini tidak memerlukan proses *build* atau *bundling* (seperti Webpack/Vite), cara menjalankannya sangat sederhana:
 
-Clone repositori ini atau Download sebagai ZIP.
+1.  **Clone** repositori ini atau **Download** sebagai ZIP.
+2.  Buka file `index.html` langsung menggunakan peramban web modern (Chrome, Firefox, Edge, Safari).
+3.  Untuk fitur AI Chatbot, pastikan Anda memiliki koneksi internet.
 
-Buka file index.html langsung menggunakan peramban web modern (Chrome, Firefox, Edge, Safari).
+-----
 
-Untuk fitur AI Chatbot, pastikan Anda memiliki koneksi internet.
+## [ CATATAN RILIS ]
 
-[ CATATAN RILIS ]
+**v1.3.0**
 
-v1.3.0
+  - Penambahan fitur AI Chatbot dengan integrasi Gemini API.
+  - Perbaikan kontras warna teks pada "Mode Matcha" (Neon) untuk keterbacaan yang lebih baik.
+  - Penggantian `alert()` browser menjadi komponen Modal kustom.
+  - Penambahan animasi *jump scare* halus pada kemunculan modal.
 
-Penambahan fitur AI Chatbot dengan integrasi Gemini API.
+**v1.0.0**
 
-Perbaikan kontras warna teks pada "Mode Matcha" (Neon) untuk keterbacaan yang lebih baik.
+  - Rilis awal dengan fitur dasar 100 Alasan dan Gacha.
 
-Penggantian alert() browser menjadi komponen Modal kustom.
+-----
 
-Penambahan animasi jump scare halus pada kemunculan modal.
+> **Disclaimer:** Proyek ini dibuat untuk tujuan hiburan dan edukasi pemrograman web.
 
-v1.0.0
-
-Rilis awal dengan fitur dasar 100 Alasan dan Gacha.
-
-Disclaimer: Proyek ini dibuat untuk tujuan hiburan dan edukasi pemrograman web.
+```
+```
